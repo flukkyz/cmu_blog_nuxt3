@@ -8,7 +8,11 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "dayjs-nuxt",
     "nuxt-lodash",
+    "@nuxtjs/i18n",
   ],
+  i18n: {
+    vueI18n: "./i18n.config.ts",
+  },
   pinia: {
     storesDirs: ["./stores/**", "./custom-folder/stores/**"],
   },

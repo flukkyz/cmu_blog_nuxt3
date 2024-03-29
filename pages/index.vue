@@ -24,7 +24,8 @@ const arr = "asdf";
     {{ dt2 }} ++ {{ dt3 }} ++ {{ charSwitch("asdf") }} ++
     {{ findSome("ฟห", arr) }} ++ {{ formatBytes(1515151515) }} ++
     {{ abbreviateNumber(5156565) }} ++
-    {{ thaiIdCard.idCardToText("1529900565324") }}
+    {{ thaiIdCard.idCardToText("1529900565324") }} ++
+    {{ $t("HOME") }}
 
     <p class="font-medium">Last Content</p>
     <div
