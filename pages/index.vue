@@ -8,21 +8,32 @@ const fetchData = async () => {
       statusMessage: "Page Not Found",
     });
   }
-  datas.value = data;
+  await sleep(5000);
+  console.log(data);
+
+  // datas.value = data;
 };
 fetchData();
+const dt2 = datetime.toText(new Date());
+const dt3 = datetime.age(new Date());
+const arr = "asdf";
 </script>
 
 <template>
   <div class="flex flex-col gap-y-5">
+    {{ dt2 }} ++ {{ dt3 }} ++ {{ charSwitch("asdf") }} ++
+    {{ findSome("ฟห", arr) }} ++ {{ formatBytes(1515151515) }} ++
+    {{ abbreviateNumber(5156565) }} ++
+    {{ thaiIdCard.idCardToText("1529900565324") }}
+
     <p class="font-medium">Last Content</p>
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2"
     >
       <div
+        v-for="item in 10"
+        :key="item"
         class="border rounded-lg overflow-hidden"
-        v-for="item in datas.rows"
-        :key="item.id"
       >
         <NuxtImg
           src="https://picsum.photos/1000"
