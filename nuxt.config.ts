@@ -25,4 +25,12 @@ export default defineNuxtConfig({
     defaultTimezone: "Asia/Bangkok",
     plugins: ["utc", "timezone", "buddhistEra", "localeData"],
   },
+  runtimeConfig: {
+    apiSecret: "123",
+    public: {
+      webBase: "http://localhost:3000",
+      apiBase: "http://localhost:5000",
+      apiPath: "/api/",
+    },
+  },
 });
