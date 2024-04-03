@@ -1,0 +1,26 @@
+body {
+  font-family: "Noto Sans Thai", sans-serif !important;
+}
+.pdf {
+  font-family: "Sarabun", sans-serif !important;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-top-left-radius: 5px;
+}
+::-webkit-scrollbar-corner {
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-right-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 16px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.8);
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const datas = ref([]);
 const fetchData = async () => {
-  const { data, error } = await useFetch("http://localhost:5000/api/posts");
+  const { data, error } = await useFetch("http://localhost:5000/api/cruds");
   if (error.value) {
     throw createError({
       statusCode: 404,

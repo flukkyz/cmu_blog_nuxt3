@@ -12,6 +12,10 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@iconify-json/fa6-brands": "^1.1.18",
+    "@iconify-json/fa6-regular": "^1.1.18",
+    "@iconify-json/fa6-solid": "^1.1.20",
+    "@iconify-json/mdi": "^1.1.64",
     "@nuxt/image": "^1.4.0",
     "@nuxt/ui": "^2.15.0",
     "@pinia/nuxt": "^0.5.1",
@@ -23,7 +27,8 @@
   "devDependencies": {
     "@nuxt/eslint": "^0.3.0-beta.6",
     "@nuxt/eslint-config": "^0.2.0",
-    "@nuxtjs/i18n": "^8.0.0",
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/i18n": "npm:@nuxtjs/i18n-edge",
     "dayjs-nuxt": "^2.1.9",
     "eslint": "^8.57.0",
     "nuxt-lodash": "^2.5.3"

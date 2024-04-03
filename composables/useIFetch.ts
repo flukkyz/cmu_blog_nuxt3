@@ -1,16 +1,16 @@
 import type { UseFetchOptions } from "#app";
 
-export async function useIFetch<T>(
-  url: string,
+export const useIFetch = <T>(
+  endpoint: string,
   options: UseFetchOptions<T> = {}
-) {
+) => {
   const config = useRuntimeConfig();
   const baseURL = `${config.public.apiBase}${config.public.apiPath}`;
   const accessToken = useCookie("accessToken");
 
   const defaults: UseFetchOptions<T> = {
     baseURL,
-    key: url,
+    key: endpoint,
     headers: accessToken.value
       ? { Authorization: `Bearer ${accessToken.value}` }
       : {},
@@ -32,7 +32,7 @@ export async function useIFetch<T>(
             accessToken.value = newToken;
 
             options.headers = { Authorization: `Bearer ${newToken}` };
-            useFetch(url, options as UseFetchOptions<T>);
+            useFetch(endpoint, options as UseFetchOptions<T>);
           } else {
             throw new Error("Token refresh failed");
           }
@@ -45,5 +45,5 @@ export async function useIFetch<T>(
 
   const params = useMerge(options, defaults);
 
-  return useFetch(url, params);
-}
+  return useFetch(endpoint, params);
+};

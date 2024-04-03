@@ -9,9 +9,21 @@ export default defineNuxtConfig({
     "dayjs-nuxt",
     "nuxt-lodash",
     "@nuxtjs/i18n",
+    "@nuxtjs/google-fonts",
   ],
+  css: ["~/assets/main.css"],
+  ui: {
+    icons: ["mdi", "fa6-solid", "fa6-regular", "fa6-brands"],
+  },
   i18n: {
+    defaultLocale: "en",
     vueI18n: "./i18n.config.ts",
+  },
+  googleFonts: {
+    families: {
+      Sarabun: true,
+      "Noto+Sans+Thai": true,
+    },
   },
   pinia: {
     storesDirs: ["./stores/**", "./custom-folder/stores/**"],
@@ -21,7 +33,7 @@ export default defineNuxtConfig({
   },
   dayjs: {
     locales: ["en", "th"],
-    defaultLocale: "th",
+    defaultLocale: "en",
     defaultTimezone: "Asia/Bangkok",
     plugins: ["utc", "timezone", "buddhistEra", "localeData"],
   },

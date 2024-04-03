@@ -1,48 +1,66 @@
 <script setup lang="ts">
+const localePath = useLocalePath();
+
 const queryString = ref({
   size: 10,
   page: 1,
   q: "",
 });
 
-const { datas, pending, refresh, create, update } = await useCruds(queryString);
+const currentData = ref();
+
+const { data, pending, refresh, create, update, destroy } = await useCruds(
+  queryString
+);
 
 const checkLastPage = () => {
   if (
-    datas.value &&
-    queryString.value.page > datas.value.totalPages &&
-    datas.value.totalPages > 0
+    data.value &&
+    queryString.value.page > data.value.totalPages &&
+    data.value.totalPages > 0
   ) {
-    queryString.value.page = datas.value.totalPages;
+    queryString.value.page = data.value.totalPages;
     refresh();
   }
 };
-watch(datas, checkLastPage);
+watch(data, checkLastPage);
 
 const createItem = async () => {
-  await create({ name: "bbb" });
-  refresh();
+  const data = await create({ name: "bbb" });
+  if (data.status.value === "success") {
+    currentData.value = data.data;
+    refresh();
+  }
 };
 const updateItem = async () => {
   await update(5, { name: "cccc" });
+  refresh();
+};
+const destroyItem = async () => {
+  await destroy(15);
   refresh();
 };
 </script>
 
 <template>
   <div>
+    showLoading : {{ loading().showLoading }}
+    <UButton label="about page" :to="localePath({ name: 'about' })" />
     <pre>
       {{ queryString }}
     </pre>
+    {{ currentData }}
     <h1>User Profile</h1>
     <div v-if="pending">Loading...</div>
     <div v-else>
       <pre>
-        {{ datas }}
+        {{ data }}
       </pre>
     </div>
     <UButton label="Create" @click="createItem" />
     <UButton label="update" @click="updateItem" />
+    <UButton label="delete" @click="destroyItem" />
     <UButton label="search" @click="queryString.q = 'cc'" />
+    <UButton label="clear" @click="queryString.q = ''" />
   </div>
 </template>

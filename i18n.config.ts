@@ -4,9 +4,15 @@ import thApp from "./locales/th/app.json";
 import enApp from "./locales/en/app.json";
 export default defineI18nConfig(() => ({
   legacy: false,
-  locale: "th",
+  locale: "en",
   messages: {
-    th: { ...thCommon, thApp },
-    en: { ...enCommon, enApp },
+    th: {
+      ...thCommon,
+      ...thApp,
+    },
+    en: {
+      ...enCommon,
+      ...enApp,
+    },
   },
 }));
