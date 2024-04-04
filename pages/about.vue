@@ -1,24 +1,17 @@
 <script setup lang="ts">
 const { locale, setLocale } = useI18n();
 const localePath = useLocalePath();
-const aaa = localePath("cruds", "en");
-const bbb = localePath({ name: "index" }, "en");
-console.log("bbb", bbb);
 </script>
 <template>
   <div class="">
     {{ locale }}
     <div>showLoading : {{ loading().showLoading }}</div>
-    localePath : {{ localePath("cruds") }} | aaa:
-    {{ aaa }}
-    ||
-    {{ bbb }}
     <br />
     <br />
     <UButton @click="setLocale('th')">TH</UButton>
-    <NuxtLinkLocale to="cruds">
-      <UButton>cruds</UButton>
-    </NuxtLinkLocale>
+    <UButton @click="setLocale('en')">EN</UButton>
+    <br />
+    <UButton label="cruds page" :to="localePath({ name: 'cruds' })" />
     <NuxtLink :to="localePath('index')">{{ $t("HOME") }}</NuxtLink>
   </div>
   <div>

@@ -39,6 +39,7 @@ const updateItem = async () => {
 const destroyItem = async () => {
   await destroy(15);
   refresh();
+  loading().show();
 };
 </script>
 

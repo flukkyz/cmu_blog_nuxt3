@@ -17,6 +17,22 @@ export default defineNuxtConfig({
   },
   i18n: {
     defaultLocale: "en",
+    locales: [
+      {
+        code: "th",
+        countryCode: "th",
+        name: "ไทย",
+        subName: "Thai",
+        iso: "th-TH",
+      },
+      {
+        code: "en",
+        countryCode: "gb",
+        name: "English",
+        subName: "อังกฤษ",
+        iso: "en-US",
+      },
+    ],
     vueI18n: "./i18n.config.ts",
   },
   googleFonts: {

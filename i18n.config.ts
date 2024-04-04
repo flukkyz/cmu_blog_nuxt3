@@ -5,6 +5,7 @@ import enApp from "./locales/en/app.json";
 export default defineI18nConfig(() => ({
   legacy: false,
   locale: "en",
+  fallbackLocale: "en",
   messages: {
     th: {
       ...thCommon,
