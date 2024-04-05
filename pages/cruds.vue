@@ -33,7 +33,15 @@ const createItem = async () => {
   }
 };
 const updateItem = async () => {
-  await update(5, { name: "cccc" });
+  const { error } = await update(5, { name: "cccc" });
+  if (error.value) {
+    console.log(error.value.statusCode);
+
+    throw createError({
+      statusCode: error.value.statusCode,
+      statusMessage: error.value.statusMessage,
+    });
+  }
   refresh();
 };
 const destroyItem = async () => {

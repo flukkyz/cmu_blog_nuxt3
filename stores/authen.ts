@@ -1,6 +1,12 @@
 // import { logout, me } from '@/services/auth.services'
 interface User {
+  id: number;
+  firstname: string;
+  lastname: string;
+  phone: string;
   email: string;
+  avatar: string;
+  password_created_at: string;
 }
 
 export interface Login {
@@ -22,9 +28,6 @@ interface Authentication {
   refreshToken?: string;
 }
 
-const accessToken = useCookie("accessToken");
-const refreshToken = useCookie("refreshToken");
-
 export const authen = defineStore("authen", {
   state: () => {
     return {
@@ -32,55 +35,83 @@ export const authen = defineStore("authen", {
     } as ListModel;
   },
   actions: {
-    async login(authentication: Authentication) {
-      accessToken.value = authentication.accessToken;
-      refreshToken.value = authentication.refreshToken;
+    async login(body: Login) {
+      const {
+        error,
+        data,
+        status,
+        refresh: login,
+      } = await useIFetch<Authentication>("auth-member/login", {
+        method: "POST",
+        body,
+        immediate: false,
+        watch: false,
+      });
+
+      const onLoggedIn = () => {
+        if (data.value) {
+          const accessToken = useCookie("accessToken");
+          const refreshToken = useCookie("refreshToken");
+          accessToken.value = data.value.accessToken;
+          refreshToken.value = data.value.refreshToken;
+        }
+      };
+      watch(data, onLoggedIn);
+
+      return {
+        error,
+        status,
+        login,
+      };
     },
-    // async getUser() {
-    //   if (!this.loggedIn) {
-    //     if (accessToken.value && refreshToken.value) {
-    //       await fetchApiUser();
-    //       if (this.user) {
-    //         this.loggedIn = true;
-    //       }
-    //     }
-    //   }
-    // },
-    // async fetchUser() {
-    //   if (this.loggedIn) {
-    //     await fetchApiUser();
-    //   }
-    // },
-    // async logout() {
-    //   await onLogout();
-    // },
-    clear() {
-      cleanData();
+    async getUser() {
+      if (!this.loggedIn) {
+        const accessToken = useCookie("accessToken");
+        const refreshToken = useCookie("refreshToken");
+        if (accessToken.value && refreshToken.value) {
+          await fetchApiUser();
+          if (this.user) {
+            this.loggedIn = true;
+          }
+        }
+      }
+    },
+    async fetchUser() {
+      if (this.loggedIn) {
+        await fetchApiUser();
+      }
+    },
+    async logout() {
+      const accessToken = useCookie("accessToken");
+      const refreshToken = useCookie("refreshToken");
+      accessToken.value = null;
+      refreshToken.value = null;
+      this.user = undefined;
+      this.loggedIn = false;
+      const { error, status } = await useIFetch("auth-member/logout", {
+        method: "DELETE",
+      });
+      if (error.value) {
+        throw createError({
+          statusCode: error.value.statusCode,
+          statusMessage: error.value.statusMessage,
+        });
+      }
+      return { status };
     },
   },
 });
 
-// const fetchApiUser = async () => {
-//   const auth = authStore();
-//   try {
-//     const userData = await me();
-//     auth.user = userData.data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-// const onLogout = async () => {
-//   try {
-//     await logout();
-//     cleanData();
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-const cleanData = async () => {
-  const auth = authen();
-  accessToken.value = null;
-  refreshToken.value = null;
-  auth.user = undefined;
-  auth.loggedIn = false;
+const fetchApiUser = async () => {
+  const { error, data } = await useIFetch<User>("auth-member/me");
+  if (error.value) {
+    throw createError({
+      statusCode: error.value.statusCode,
+      statusMessage: error.value.statusMessage,
+    });
+  }
+  if (data.value) {
+    const auth = authen();
+    auth.user = data.value;
+  }
 };

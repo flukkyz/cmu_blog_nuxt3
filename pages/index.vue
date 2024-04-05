@@ -1,26 +1,33 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: "auth",
+});
 const datas = ref([]);
-const fetchData = async () => {
-  const { data, error } = await useFetch("http://localhost:5000/api/cruds");
-  if (error.value) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: "Page Not Found",
-    });
-  }
-  await sleep(5000);
-  console.log(data);
+const { data, error } = await useIFetch("aaaaaaaaaaa");
+if (error.value) {
+  throw createError({
+    statusCode: error.value.statusCode,
+    statusMessage: error.value.statusMessage,
+    fatal: true,
+  });
+}
 
-  // datas.value = data;
-};
-fetchData();
 const dt2 = datetime.toText(new Date());
 const dt3 = datetime.age(new Date());
 const arr = "asdf";
+
+const auth = authen();
+const router = useRouter();
+const localePath = useLocalePath();
+const onLogout = async () => {
+  await auth.logout();
+  router.push(localePath({ name: "login" }));
+};
 </script>
 
 <template>
   <div class="flex flex-col gap-y-5">
+    <UButton label="Logout" @click="onLogout" />
     {{ dt2 }} ++ {{ dt3 }} ++ {{ charSwitch("asdf") }} ++
     {{ findSome("ฟห", arr) }} ++ {{ formatBytes(1515151515) }} ++
     {{ abbreviateNumber(5156565) }} ++

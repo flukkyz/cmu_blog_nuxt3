@@ -1,9 +1,17 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: "auth",
+});
 const { locale, setLocale } = useI18n();
 const localePath = useLocalePath();
+
+const auth = authen();
 </script>
 <template>
   <div class="">
+    <div v-if="auth.loggedIn" class="">
+      {{ auth.user }}
+    </div>
     {{ locale }}
     <div>showLoading : {{ loading().showLoading }}</div>
     <br />

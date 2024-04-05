@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: "guest",
+});
 const body = reactive({
   username: "",
   password: "",
@@ -14,17 +17,14 @@ const clearInvalid = () => {
   noVerify.value = false;
   inactive.value = false;
 };
-
-const { error, status, refresh } = await await useIFetch("auth-member/login", {
-  method: "POST",
-  body,
-  immediate: false,
-  watch: false,
-});
+const auth = authen();
+const router = useRouter();
+const localePath = useLocalePath();
+const { error, status, login } = await auth.login(body);
 
 const onLogin = async () => {
   tempEmail.value = body.username;
-  await refresh();
+  await login();
   if (error.value) {
     body.password = "";
     const statusCode = error.value.statusCode;
@@ -34,6 +34,9 @@ const onLogin = async () => {
       statusCode === 405,
     ];
   }
+  if (status.value === "success") {
+    router.push(localePath({ name: "index" }));
+  }
 };
 
 const resendVerify = async () => {
@@ -42,7 +45,6 @@ const resendVerify = async () => {
     body: { email: tempEmail },
   });
   if (error.value) {
-    console.log("error", error.value);
   }
   noVerify.value = false;
 };
@@ -103,7 +105,7 @@ const resendVerify = async () => {
           block
           size="lg"
           :label="$t('LOGIN')"
-          :disabled="status === 'pending'"
+          :disabled="status === 'pending' || !body.username || !body.password"
           :loading="status === 'pending'"
         />
       </UForm>
