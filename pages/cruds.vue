@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const localePath = useLocalePath();
+const toast = useToast();
 
 const queryString = ref({
   size: 10,
@@ -35,11 +36,9 @@ const createItem = async () => {
 const updateItem = async () => {
   const { error } = await update(5, { name: "cccc" });
   if (error.value) {
-    console.log(error.value.statusCode);
-
-    throw createError({
-      statusCode: error.value.statusCode,
-      statusMessage: error.value.statusMessage,
+    toast.add({
+      title: error.value.statusCode?.toString(),
+      description: error.value.statusMessage,
     });
   }
   refresh();

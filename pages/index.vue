@@ -3,7 +3,7 @@ definePageMeta({
   middleware: "auth",
 });
 const datas = ref([]);
-const { data, error } = await useIFetch("aaaaaaaaaaa");
+const { data, error } = await useIFetch("cruds");
 if (error.value) {
   throw createError({
     statusCode: error.value.statusCode,
