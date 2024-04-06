@@ -2,8 +2,10 @@
 definePageMeta({
   middleware: "auth",
 });
-const { locale, setLocale } = useI18n();
+const { locale, locales, setLocale } = useI18n();
 const localePath = useLocalePath();
+
+const localeObj = useFind(locales.value, { code: locale.value });
 
 const auth = authen();
 </script>
@@ -12,7 +14,19 @@ const auth = authen();
     <div v-if="auth.loggedIn" class="">
       {{ auth.user }}
     </div>
+    <br />
+    <br />
     {{ locale }}
+    <br />
+    <br />
+    {{ locales }}
+    <br />
+    <br />
+    <||
+    {{ localeObj }}
+    ||>
+    <br />
+    <br />
     <div>showLoading : {{ loading().showLoading }}</div>
     <br />
     <br />

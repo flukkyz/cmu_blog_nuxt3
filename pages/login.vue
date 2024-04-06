@@ -1,7 +1,13 @@
 <script setup lang="ts">
+const { t } = useI18n();
 definePageMeta({
   middleware: "guest",
 });
+useSeoMeta(
+  seoTag({
+    title: t("LOGIN"),
+  })
+);
 const body = reactive({
   username: "",
   password: "",
@@ -120,27 +126,26 @@ const resendVerify = async () => {
               :loading="status === 'pending'"
             />
             <UDivider :label="$t('OR')" />
-            {{ `${apiPath}auth-member/oauth/cmu` }}
             <UButton
-              label="Login with CMU OAuth"
+              :label="$t('LOGIN_WITH', { text: 'CMU OAuth' })"
               :to="`${apiPath}auth-member/oauth/cmu`"
               size="lg"
               color="purple"
               class="justify-center"
             >
               <template #leading>
-                <UAvatar src="/images/cmu_logo.png" size="sm" />
+                <NuxtImg src="/images/cmu_logo.png" height="30" />
               </template>
             </UButton>
             <UButton
-              label="Login with CMU Microsoft 365"
+              :label="$t('LOGIN_WITH', { text: 'CMU Microsoft 365' })"
               :to="`${apiPath}auth-member/oauth/m365`"
               size="lg"
               color="blue"
               class="justify-center"
             >
               <template #leading>
-                <UAvatar src="/images/cmu_logo.png" size="sm" />
+                <NuxtImg src="/images/cmu_logo_2.png" height="30" />
               </template>
             </UButton>
           </div>

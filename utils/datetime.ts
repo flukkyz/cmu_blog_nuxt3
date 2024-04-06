@@ -1,4 +1,3 @@
-import { useDayjs } from "#dayjs"; // not need if you are using auto import
 const dayjs = useDayjs();
 export type DateTimeStyle = "shortest" | "short" | "medium" | "long" | "full";
 

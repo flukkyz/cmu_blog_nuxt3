@@ -58,6 +58,7 @@
   "CHANGE": "เปลี่ยน{text}",
   "SAVE": "บันทึก",
   "LOGIN": "เข้าสู่ระบบ",
+  "LOGIN_WITH": "เข้าสู่ระบบด้วย {text}",
   "INCORRECT": "{text}ไม่ถูกต้อง",
   "LOGIN_SUCCESS": "เข้าสู่ระบบสำเร็จ",
   "LOGOUT": "ออกจากระบบ",

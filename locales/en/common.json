@@ -58,6 +58,7 @@
   "CHANGE": "Change {text}",
   "SAVE": "Save",
   "LOGIN": "Sign in",
+  "LOGIN_WITH": "Sign in with {text}",
   "INCORRECT": "Incorrect {text}",
   "LOGIN_SUCCESS": "Signed in successfully",
   "LOGOUT": "Sign out",
