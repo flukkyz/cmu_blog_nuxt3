@@ -28,6 +28,8 @@ interface Authentication {
   refreshToken?: string;
 }
 
+const endpoint = "auth-member";
+
 export const authen = defineStore("authen", {
   state: () => {
     return {
@@ -41,7 +43,7 @@ export const authen = defineStore("authen", {
         data,
         status,
         refresh: login,
-      } = await useIFetch<Authentication>("auth-member/login", {
+      } = await useIFetch<Authentication>(`${endpoint}/login`, {
         method: "POST",
         body,
         immediate: false,
@@ -50,10 +52,7 @@ export const authen = defineStore("authen", {
 
       const onLoggedIn = () => {
         if (data.value) {
-          const accessToken = useCookie("accessToken");
-          const refreshToken = useCookie("refreshToken");
-          accessToken.value = data.value.accessToken;
-          refreshToken.value = data.value.refreshToken;
+          setToken(data.value.accessToken!, data.value.refreshToken!);
         }
       };
       watch(data, onLoggedIn);
@@ -64,11 +63,27 @@ export const authen = defineStore("authen", {
         login,
       };
     },
+    async callBack(code: string, state: string) {
+      if (!this.loggedIn) {
+        const { data, error, status } = await useIFetch<Authentication>(
+          `${endpoint}/callback?code=${code}&state=${state}`
+        );
+        if (error.value) {
+          throw createError({
+            statusCode: error.value.statusCode,
+            statusMessage: error.value.statusMessage,
+            fatal: true,
+          });
+        }
+        if (data.value) {
+          setToken(data.value.accessToken!, data.value.refreshToken!);
+        }
+        await this.getUser();
+      }
+    },
     async getUser() {
       if (!this.loggedIn) {
-        const accessToken = useCookie("accessToken");
-        const refreshToken = useCookie("refreshToken");
-        if (accessToken.value && refreshToken.value) {
+        if (hasToken()) {
           await fetchApiUser();
           if (this.user) {
             this.loggedIn = true;
@@ -82,13 +97,10 @@ export const authen = defineStore("authen", {
       }
     },
     async logout() {
-      const accessToken = useCookie("accessToken");
-      const refreshToken = useCookie("refreshToken");
-      accessToken.value = null;
-      refreshToken.value = null;
+      setToken(null, null);
       this.user = undefined;
       this.loggedIn = false;
-      const { error, status } = await useIFetch("auth-member/logout", {
+      const { error, status } = await useIFetch(`${endpoint}/logout`, {
         method: "DELETE",
       });
       if (error.value) {
@@ -102,8 +114,27 @@ export const authen = defineStore("authen", {
   },
 });
 
+const setToken = (
+  newAccessToken: string | null,
+  newRefreshToken: string | null
+) => {
+  const accessToken = useCookie("accessToken");
+  const refreshToken = useCookie("refreshToken");
+  accessToken.value = newAccessToken;
+  refreshToken.value = newRefreshToken;
+};
+const getToken = () => {
+  const accessToken = useCookie("accessToken");
+  const refreshToken = useCookie("refreshToken");
+  return { accessToken, refreshToken };
+};
+const hasToken = (): boolean => {
+  const { accessToken, refreshToken } = getToken();
+  return !!accessToken.value && !!refreshToken.value;
+};
+
 const fetchApiUser = async () => {
-  const { error, data } = await useIFetch<User>("auth-member/me");
+  const { error, data } = await useIFetch<User>(`${endpoint}/me`);
   if (error.value) {
     throw createError({
       statusCode: error.value.statusCode,

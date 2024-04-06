@@ -12,6 +12,9 @@ const noVerify = ref<boolean>(false);
 const inactive = ref<boolean>(false);
 const tempEmail = ref<string>("");
 
+const config = useRuntimeConfig();
+const apiPath = `${config.public.apiBase}${config.public.apiPath}`;
+
 const clearInvalid = () => {
   invalid.value = false;
   noVerify.value = false;
@@ -52,68 +55,97 @@ const resendVerify = async () => {
 
 <template>
   <div class="flex justify-center items-center">
-    <UCard>
-      <template #header>
-        <p class="font-bold">
-          {{ $t("LOGIN") }}
-        </p>
-      </template>
-
-      <UForm :state="body" class="space-y-4" @submit="onLogin">
-        <UFormGroup label="Email" name="email">
-          <UInput
-            v-model="body.username"
-            :disabled="status === 'pending'"
-            @input="clearInvalid"
-          />
-        </UFormGroup>
-
-        <UFormGroup label="Password" name="password">
-          <UInput
-            v-model="body.password"
-            type="password"
-            :disabled="status === 'pending'"
-            @input="clearInvalid"
-          />
-        </UFormGroup>
-
-        <p v-if="invalid" class="text-red-500 text-center font-bold text-sm">
-          {{ $t("INCORRECT", { text: " E-mail " + $t("OR") + " Password " }) }}
-        </p>
-
-        <p v-if="inactive" class="text-red-500 text-center font-bold text-sm">
-          {{ $t("USER_INACTIVE") }}
-        </p>
-
-        <div v-if="noVerify" class="text-center">
-          <p class="text-red-500 text-center font-bold text-xs">
-            {{ $t("EMAIL_HAS_NOT_BEEN_VERIFIED") }}
+    <UForm :state="body" class="space-y-4" @submit="onLogin">
+      <UCard>
+        <template #header>
+          <p class="font-bold">
+            {{ $t("LOGIN") }}
           </p>
-          <p class="text-xs text-gray-400">
-            {{ $t("IF_HAVE_NOT_RECEIVED_EMAIL") }}
+        </template>
+
+        <div class="flex flex-col gap-y-5">
+          <UFormGroup label="Email" name="email">
+            <UInput
+              v-model="body.username"
+              :disabled="status === 'pending'"
+              @input="clearInvalid"
+            />
+          </UFormGroup>
+
+          <UFormGroup label="Password" name="password">
+            <UInput
+              v-model="body.password"
+              type="password"
+              :disabled="status === 'pending'"
+              @input="clearInvalid"
+            />
+          </UFormGroup>
+
+          <p v-if="invalid" class="text-red-500 text-center font-bold text-sm">
+            {{
+              $t("INCORRECT", { text: " E-mail " + $t("OR") + " Password " })
+            }}
           </p>
-          <UButton
-            size="sm"
-            color="blue"
-            :label="$t('SEND_EMAIL_AGAIN')"
-            @click="resendVerify"
-          />
+
+          <p v-if="inactive" class="text-red-500 text-center font-bold text-sm">
+            {{ $t("USER_INACTIVE") }}
+          </p>
         </div>
-        <UButton
-          v-else
-          type="submit"
-          block
-          size="lg"
-          :label="$t('LOGIN')"
-          :disabled="status === 'pending' || !body.username || !body.password"
-          :loading="status === 'pending'"
-        />
-      </UForm>
 
-      <template #footer>
-        or
-        <!-- <UButton :label="$t('LOGIN')" /> -->
-      </template>
-    </UCard>
+        <template #footer>
+          <div class="flex flex-col gap-y-5">
+            <div v-if="noVerify" class="text-center">
+              <p class="text-red-500 text-center font-bold text-xs">
+                {{ $t("EMAIL_HAS_NOT_BEEN_VERIFIED") }}
+              </p>
+              <p class="text-xs text-gray-400">
+                {{ $t("IF_HAVE_NOT_RECEIVED_EMAIL") }}
+              </p>
+              <UButton
+                size="sm"
+                color="blue"
+                :label="$t('SEND_EMAIL_AGAIN')"
+                @click="resendVerify"
+              />
+            </div>
+            <UButton
+              v-else
+              type="submit"
+              block
+              size="lg"
+              :label="$t('LOGIN')"
+              :disabled="
+                status === 'pending' || !body.username || !body.password
+              "
+              :loading="status === 'pending'"
+            />
+            <UDivider :label="$t('OR')" />
+            {{ `${apiPath}auth-member/oauth/cmu` }}
+            <UButton
+              label="Login with CMU OAuth"
+              :to="`${apiPath}auth-member/oauth/cmu`"
+              size="lg"
+              color="purple"
+              class="justify-center"
+            >
+              <template #leading>
+                <UAvatar src="/images/cmu_logo.png" size="sm" />
+              </template>
+            </UButton>
+            <UButton
+              label="Login with CMU Microsoft 365"
+              :to="`${apiPath}auth-member/oauth/m365`"
+              size="lg"
+              color="blue"
+              class="justify-center"
+            >
+              <template #leading>
+                <UAvatar src="/images/cmu_logo.png" size="sm" />
+              </template>
+            </UButton>
+          </div>
+        </template>
+      </UCard>
+    </UForm>
   </div>
 </template>
