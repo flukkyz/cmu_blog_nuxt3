@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 definePageMeta({
+  layout: "blank",
   middleware: "guest",
 });
 useSeoMeta(
@@ -16,7 +17,6 @@ const body = reactive({
 const invalid = ref<boolean>(false);
 const noVerify = ref<boolean>(false);
 const inactive = ref<boolean>(false);
-const tempEmail = ref<string>("");
 
 const config = useRuntimeConfig();
 const apiPath = `${config.public.apiBase}${config.public.apiPath}`;
@@ -32,7 +32,7 @@ const localePath = useLocalePath();
 const { error, status, login } = await auth.login(body);
 
 const onLogin = async () => {
-  tempEmail.value = body.username;
+  resendVerifyEmail.email = body.username;
   await login();
   if (error.value) {
     body.password = "";
@@ -48,21 +48,27 @@ const onLogin = async () => {
   }
 };
 
-const resendVerify = async () => {
-  const { error } = await useIFetch("auth-member/resend-verify", {
-    method: "POST",
-    body: { email: tempEmail },
-  });
+const toast = useToast();
+const resendVerifyEmail = reactive({
+  email: "",
+});
+const resendVerify = await auth.resendVerify(resendVerifyEmail);
+const onResendVerify = async () => {
+  await resendVerify.execute();
   if (error.value) {
+    toast.add({
+      title: error.value.statusCode?.toString(),
+      description: error.value.statusMessage,
+    });
   }
   noVerify.value = false;
 };
 </script>
 
 <template>
-  <div class="flex justify-center items-center">
+  <div class="flex justify-center items-center min-h-screen bg-gray-100">
     <UForm :state="body" class="space-y-4" @submit="onLogin">
-      <UCard>
+      <UCard class="min-w-80 shadow-xl">
         <template #header>
           <p class="font-bold">
             {{ $t("LOGIN") }}
@@ -74,6 +80,8 @@ const resendVerify = async () => {
             <UInput
               v-model="body.username"
               :disabled="status === 'pending'"
+              autocomplete="off"
+              autofocus
               @input="clearInvalid"
             />
           </UFormGroup>
@@ -83,6 +91,7 @@ const resendVerify = async () => {
               v-model="body.password"
               type="password"
               :disabled="status === 'pending'"
+              autocomplete="off"
               @input="clearInvalid"
             />
           </UFormGroup>
@@ -99,23 +108,22 @@ const resendVerify = async () => {
         </div>
 
         <template #footer>
-          <div class="flex flex-col gap-y-5">
-            <div v-if="noVerify" class="text-center">
-              <p class="text-red-500 text-center font-bold text-xs">
-                {{ $t("EMAIL_HAS_NOT_BEEN_VERIFIED") }}
-              </p>
-              <p class="text-xs text-gray-400">
-                {{ $t("IF_HAVE_NOT_RECEIVED_EMAIL") }}
-              </p>
-              <UButton
-                size="sm"
-                color="blue"
-                :label="$t('SEND_EMAIL_AGAIN')"
-                @click="resendVerify"
-              />
-            </div>
+          <div v-if="noVerify" class="text-center">
+            <p class="text-red-500 text-center font-bold text-xs">
+              {{ $t("EMAIL_HAS_NOT_BEEN_VERIFIED") }}
+            </p>
+            <p class="text-xs text-gray-400">
+              {{ $t("IF_HAVE_NOT_RECEIVED_EMAIL") }}
+            </p>
             <UButton
-              v-else
+              size="sm"
+              color="blue"
+              :label="$t('SEND_EMAIL_AGAIN')"
+              @click="onResendVerify"
+            />
+          </div>
+          <div v-else class="flex flex-col gap-y-5">
+            <UButton
               type="submit"
               block
               size="lg"

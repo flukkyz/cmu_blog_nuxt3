@@ -2,15 +2,6 @@
 definePageMeta({
   middleware: "auth",
 });
-const datas = ref([]);
-const { data, error } = await useIFetch("cruds");
-if (error.value) {
-  throw createError({
-    statusCode: error.value.statusCode,
-    statusMessage: error.value.statusMessage,
-    fatal: true,
-  });
-}
 
 const dt2 = datetime.toText(new Date());
 const dt3 = datetime.age(new Date());
@@ -33,6 +24,8 @@ const onLogout = async () => {
     {{ abbreviateNumber(5156565) }} ++
     {{ thaiIdCard.idCardToText("1529900565324") }} ++
     {{ $t("HOME") }}
+
+    <UButton label="cruds page" :to="localePath({ name: 'cruds' })" />
 
     <p class="font-medium">Last Content</p>
     <div

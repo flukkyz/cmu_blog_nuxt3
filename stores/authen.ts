@@ -27,7 +27,7 @@ export const authen = defineStore("authen", {
         error,
         data,
         status,
-        refresh: login,
+        execute: login,
       } = await useIFetch<Authentication>(`${endpoint}/login`, {
         method: "POST",
         body,
@@ -50,7 +50,7 @@ export const authen = defineStore("authen", {
     },
     async callBack(code: string, state: string) {
       if (!this.loggedIn) {
-        const { data, error, status } = await useIFetch<Authentication>(
+        const { data, error } = await useIFetch<Authentication>(
           `${endpoint}/callback?code=${code}&state=${state}`
         );
         if (error.value) {
@@ -75,6 +75,15 @@ export const authen = defineStore("authen", {
           }
         }
       }
+    },
+    async resendVerify(body: Email) {
+      const { error, execute } = await useIFetch(`${endpoint}/resend-verify`, {
+        method: "POST",
+        body,
+        immediate: false,
+        watch: false,
+      });
+      return { error, execute };
     },
     async fetchUser() {
       if (this.loggedIn) {

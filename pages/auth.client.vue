@@ -1,10 +1,10 @@
 <script setup lang="ts">
 definePageMeta({
+  layout: "blank",
+  middleware: "guest",
   validate: async (route) => {
     return !!route.query.code && !!route.query.state;
   },
-  layout: "blank",
-  middleware: "guest",
 });
 useHead({
   title: "Authentication",
@@ -19,7 +19,12 @@ router.push(localePath({ name: "index" }));
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
-    <h1 class="display-2 text-center teal--text">Waiting for Authentication</h1>
+  <div
+    class="flex flex-col justify-center items-center min-h-screen bg-gray-100 gap-y-5 px-10"
+  >
+    <h1 class="text-3xl text-center text-primary">
+      Waiting for Authentication
+    </h1>
+    <UProgress animation="carousel" />
   </div>
 </template>

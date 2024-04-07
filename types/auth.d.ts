@@ -1,7 +1,7 @@
 export {
   Password,
   PasswordConfirmation,
-  ForgotPassword,
+  Email,
   Login,
   ChangePassword,
   Authentication,
@@ -14,7 +14,7 @@ declare global {
   interface PasswordConfirmation extends Password {
     passwordConfirmation: string;
   }
-  interface ForgotPassword {
+  interface Email {
     email: string;
   }
   interface Login extends Password {
