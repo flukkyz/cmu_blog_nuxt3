@@ -8,24 +8,9 @@ interface User {
   avatar: string;
   password_created_at: string;
 }
-
-export interface Login {
-  username: string;
-  password: string;
-}
-
 interface ListModel {
   user?: User;
   loggedIn: boolean;
-}
-interface ListModel {
-  user?: User;
-  loggedIn: boolean;
-}
-
-interface Authentication {
-  accessToken?: string;
-  refreshToken?: string;
 }
 
 const endpoint = "auth-member";

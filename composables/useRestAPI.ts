@@ -1,11 +1,4 @@
 export const useRestAPI = <DataT>(endpoint: string) => {
-  interface ListPage<R> {
-    totalItems: number;
-    rows: R[];
-    totalPages: number;
-    currentPage: number;
-  }
-
   const pagination = (query: Record<string, any>) => {
     return useIFetch<ListPage<DataT>>(endpoint, { query });
   };
