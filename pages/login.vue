@@ -57,10 +57,13 @@ const resendVerify = async () => {
   }
   noVerify.value = false;
 };
+const aaa = ref<string>("ttttt");
 </script>
 
 <template>
   <div class="flex justify-center items-center">
+    <UInput v-model="aaa" v-uppercase />
+    {{ aaa }}
     <UForm :state="body" class="space-y-4" @submit="onLogin">
       <UCard>
         <template #header>
