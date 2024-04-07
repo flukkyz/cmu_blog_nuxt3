@@ -141,6 +141,7 @@ export default defineNuxtConfig({
     "nuxt-lodash",
     "@nuxtjs/i18n",
     "@nuxtjs/google-fonts",
+    "@nuxtjs/robots",
   ],
   css: ["~/assets/main.css"],
   ui: {
@@ -184,6 +185,16 @@ export default defineNuxtConfig({
     defaultTimezone: "Asia/Bangkok",
     plugins: ["utc", "timezone", "buddhistEra", "localeData"],
   },
+  robots: [
+    {
+      UserAgent: "Googlebot",
+      Disallow: "/backend",
+    },
+    {
+      UserAgent: "*",
+      Disallow: "/backend",
+    },
+  ],
   runtimeConfig: {
     metaDefaultLang: "en",
     metaDefaultTitle: "",

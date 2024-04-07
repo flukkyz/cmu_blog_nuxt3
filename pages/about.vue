@@ -2,8 +2,19 @@
 definePageMeta({
   middleware: "auth",
 });
-const { locale, locales, setLocale } = useI18n();
+const { locale, locales, setLocale, t } = useI18n();
 const localePath = useLocalePath();
+breadcrumbs().setItems([
+  {
+    label: t("HOME"),
+    to: localePath({ name: "index" }),
+    icon: "i-fa6-solid-house",
+  },
+  {
+    label: "ABOUT",
+    icon: "i-fa6-solid-cube",
+  },
+]);
 
 const localeObj = useFind(locales.value, { code: locale.value });
 

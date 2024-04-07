@@ -1,32 +1,27 @@
-import type { RouteLocation } from "#vue-router";
+import type { RouteLocationRaw } from "#vue-router";
 
 export interface BreadcrumbItem {
-  url?: RouteLocation;
-  text: string;
-  detail?: string;
+  to?: RouteLocationRaw;
+  label: string;
+  icon: string;
 }
 
 export interface BreadcrumbsModel {
   items: BreadcrumbItem[];
-  icon: string;
-  prefixIcon: string;
-  prefixIconColor: string;
 }
 
-export const breadcrumbsStore = defineStore("breadcrumbs", {
+export const breadcrumbs = defineStore("breadcrumbs", {
   state: () => {
     return {
       items: [],
-      icon: "fa-regular fa-angle-right",
-      prefixIcon: "",
-      prefixIconColor: "gray-500",
     } as BreadcrumbsModel;
   },
   actions: {
-    setItems(payload: BreadcrumbItem[], icon?: string, color?: string) {
+    setItems(payload: BreadcrumbItem[]) {
       this.items = payload;
-      this.prefixIcon = icon || "";
-      this.prefixIconColor = color || "";
+    },
+    hasItem() {
+      return this.items.length > 0;
     },
     clear() {
       this.items = [];
