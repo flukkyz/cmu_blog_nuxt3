@@ -1,6 +1,19 @@
 <script setup lang="ts">
 const localePath = useLocalePath();
+const { t } = useI18n();
 const toast = useToast();
+
+breadcrumbs().setItems([
+  {
+    label: t("HOME"),
+    to: localePath({ name: "index" }),
+    icon: "i-fa6-solid-house",
+  },
+  {
+    label: "CRUDs",
+    icon: "i-fa6-solid-cube",
+  },
+]);
 
 const queryString = ref({
   size: 10,

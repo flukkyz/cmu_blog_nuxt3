@@ -1,4 +1,3 @@
-// import { logout, me } from '@/services/auth.services'
 interface User {
   id: number;
   firstname: string;

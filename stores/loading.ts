@@ -1,4 +1,4 @@
-export declare interface LoadingModel {
+interface LoadingModel {
   showLoading: boolean;
 }
 export const loading = defineStore("loading", {

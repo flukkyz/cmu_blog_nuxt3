@@ -1,13 +1,5 @@
-import type { RouteLocationRaw } from "#vue-router";
-
-export interface BreadcrumbItem {
-  to?: RouteLocationRaw;
-  label: string;
-  icon: string;
-}
-
-export interface BreadcrumbsModel {
-  items: BreadcrumbItem[];
+interface BreadcrumbsModel {
+  items: NavigationLinkItem[];
 }
 
 export const breadcrumbs = defineStore("breadcrumbs", {
@@ -17,7 +9,7 @@ export const breadcrumbs = defineStore("breadcrumbs", {
     } as BreadcrumbsModel;
   },
   actions: {
-    setItems(payload: BreadcrumbItem[]) {
+    setItems(payload: NavigationLinkItem[]) {
       this.items = payload;
     },
     hasItem() {
