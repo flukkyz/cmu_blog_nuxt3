@@ -18,15 +18,6 @@ const onLogout = async () => {
 
 <template>
   <div class="flex flex-col gap-y-5">
-    <UButton label="Logout" @click="onLogout" />
-    {{ dt2 }} ++ {{ dt3 }} ++ {{ charSwitch("asdf") }} ++
-    {{ findSome("ฟห", arr) }} ++ {{ formatBytes(1515151515) }} ++
-    {{ abbreviateNumber(5156565) }} ++
-    {{ thaiIdCard.idCardToText("1529900565324") }} ++
-    {{ $t("HOME") }}
-
-    <UButton label="cruds page" :to="localePath({ name: 'cruds' })" />
-
     <p class="font-medium">Last Content</p>
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2"

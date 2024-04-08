@@ -1,3 +1,7 @@
 export default defineAppConfig({
-  oAuthCallback: "/auth/",
+  ui: {
+    button: {
+      variant: { link: "hover:no-underline" },
+    },
+  },
 });

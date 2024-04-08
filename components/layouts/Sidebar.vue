@@ -1,36 +1,21 @@
 <template>
-  <USlideover v-model="drawer" side="left">
-    <UVerticalNavigation :links="items" />
+  <USlideover v-model="drawer" side="left" :ui="{ width: 'max-w-xs' }">
+    <UVerticalNavigation :links="menus().frontend" @change="onChangeRoute" />
   </USlideover>
 </template>
 
 <script setup lang="ts">
-const sidebar = useSidebarStore();
+const side = sidebar();
 const drawer = computed({
   get() {
-    return sidebar.drawer;
+    return side.drawer;
   },
   set(val) {
-    sidebar.drawer = val;
+    side.drawer = val;
   },
 });
 
-const items = [
-  {
-    label: "Foo",
-    to: "foo",
-  },
-  {
-    label: "Bar",
-    to: "bar",
-  },
-  {
-    label: "Fizz",
-    to: "fizz",
-  },
-  {
-    label: "Buzz",
-    to: "buzz",
-  },
-];
+const onChangeRoute = () => {
+  console.log("sss");
+};
 </script>

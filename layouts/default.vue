@@ -11,9 +11,12 @@ const breadcrumbItems = breadcrumbs();
     <ClientOnly>
       <UBreadcrumb
         v-if="breadcrumbItems.hasItem()"
+        class="px-3 py-1 mt-3"
         :links="breadcrumbItems.items"
       />
     </ClientOnly>
-    <slot />
+    <div class="py-10">
+      <slot />
+    </div>
   </div>
 </template>
