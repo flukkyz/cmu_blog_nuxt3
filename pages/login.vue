@@ -156,6 +156,14 @@ const onResendVerify = async () => {
                 <NuxtImg src="/images/cmu_logo_2.png" height="30" />
               </template>
             </UButton>
+            <UButton
+              :label="$t('LOGIN_WITH', { text: 'Google' })"
+              :to="`${apiPath}auth-member/oauth/google`"
+              size="lg"
+              color="red"
+              icon="i-fa6-brands-google"
+              class="justify-center"
+            />
           </div>
         </template>
       </UCard>
