@@ -21,8 +21,8 @@ export default async (query: Record<string, any>) => {
     pending,
     refresh,
     error,
-    create: (body: Crud) => api.create(body),
-    update: (id: number, body: Crud) => api.update(id, body),
-    destroy: (id: number) => api.destroy(id),
+    create: async (body: Crud) => await api.create(body),
+    update: async (id: number, body: Crud) => await api.update(id, body),
+    destroy: async (id: number) => await api.destroy(id),
   };
 };

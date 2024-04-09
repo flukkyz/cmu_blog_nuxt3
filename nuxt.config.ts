@@ -151,18 +151,18 @@ export default defineNuxtConfig({
     defaultLocale: "en",
     locales: [
       {
-        code: "th",
-        countryCode: "th",
-        name: "ไทย",
-        subName: "Thai",
-        iso: "th-TH",
-      },
-      {
         code: "en",
         countryCode: "us",
         name: "English",
         subName: "อังกฤษ",
         iso: "en-US",
+      },
+      {
+        code: "th",
+        countryCode: "th",
+        name: "ไทย",
+        subName: "Thai",
+        iso: "th-TH",
       },
     ],
     vueI18n: "./i18n.config.ts",

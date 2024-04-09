@@ -3,5 +3,8 @@ export default defineAppConfig({
     button: {
       variant: { link: "hover:no-underline" },
     },
+    icons: {
+      dynamic: true,
+    },
   },
 });

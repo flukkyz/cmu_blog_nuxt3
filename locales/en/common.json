@@ -57,6 +57,7 @@
   "_CLOSED": "{text} Closed",
   "CHANGE": "Change {text}",
   "SAVE": "Save",
+  "SIGNUP": "Sign up",
   "LOGIN": "Sign in",
   "LOGIN_WITH": "Sign in with {text}",
   "INCORRECT": "Incorrect {text}",

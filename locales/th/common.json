@@ -57,6 +57,7 @@
   "_CLOSED": "ปิด{text}แล้ว",
   "CHANGE": "เปลี่ยน{text}",
   "SAVE": "บันทึก",
+  "SIGNUP": "สมัครสมาชิก",
   "LOGIN": "เข้าสู่ระบบ",
   "LOGIN_WITH": "เข้าสู่ระบบด้วย {text}",
   "INCORRECT": "{text}ไม่ถูกต้อง",

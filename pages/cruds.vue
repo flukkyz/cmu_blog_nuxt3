@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { FormsCrud } from "#components";
+import type { Crud } from "~/components/forms/Crud.vue";
+
 const localePath = useLocalePath();
 const { t } = useI18n();
 const toast = useToast();
@@ -21,6 +24,16 @@ const queryString = ref({
   q: "",
 });
 
+const columns = [
+  {
+    key: "name",
+    label: "Title",
+  },
+  {
+    key: "actions",
+  },
+];
+
 const currentData = ref();
 
 const { data, pending, refresh, create, update, destroy } = await useCruds(
@@ -39,49 +52,68 @@ const checkLastPage = () => {
 };
 watch(data, checkLastPage);
 
-const createItem = async () => {
-  const data = await create({ name: "bbb" });
-  if (data.status.value === "success") {
-    currentData.value = data.data;
-    refresh();
-  }
-};
-const updateItem = async () => {
-  const { error } = await update(5, { name: "cccc" });
-  if (error.value) {
-    toast.add({
-      title: error.value.statusCode?.toString(),
-      description: error.value.statusMessage,
-    });
-  }
-  refresh();
-};
-const destroyItem = async () => {
-  await destroy(15);
+const destroyItem = async (id: number) => {
+  await destroy(id);
   refresh();
   loading().show();
+};
+
+const crudForm = ref<InstanceType<typeof FormsCrud> | null>(null);
+const createItem = () => {
+  crudForm.value?.show();
+};
+const updateItem = (data: Crud) => {
+  crudForm.value?.show(data);
+};
+
+const onSave = async (data: Crud, mode: Mode) => {
+  if (mode === "add") {
+    const { error } = await create(data);
+    if (error.value) {
+      toast.add({
+        title: error.value.statusCode?.toString(),
+        description: error.value.statusMessage,
+      });
+    }
+  } else {
+    const { error } = await update(data.id!, data);
+    if (error.value) {
+      toast.add({
+        title: error.value.statusCode?.toString(),
+        description: error.value.statusMessage,
+      });
+    }
+  }
+  refresh();
 };
 </script>
 
 <template>
   <div>
-    showLoading : {{ loading().showLoading }}
-    <UButton label="about page" :to="localePath({ name: 'about' })" />
-    <pre>
-      {{ queryString }}
-    </pre>
-    {{ currentData }}
-    <h1>User Profile</h1>
-    <div v-if="pending">Loading...</div>
-    <div v-else>
-      <pre>
-        {{ data }}
-      </pre>
+    <div
+      class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700"
+    >
+      <UInput v-model="queryString.q" placeholder="Filter title..." />
+      <UButton label="Create" @click="createItem" />
     </div>
-    <UButton label="Create" @click="createItem" />
-    <UButton label="update" @click="updateItem" />
-    <UButton label="delete" @click="destroyItem" />
-    <UButton label="search" @click="queryString.q = 'cc'" />
-    <UButton label="clear" @click="queryString.q = ''" />
+
+    <UTable :rows="data?.rows" :columns="columns" :loading="pending">
+      <template #actions-data="{ row }">
+        <UButton label="update" @click="updateItem(row)" />
+        <UButton label="delete" @click="destroyItem(row.id)" />
+      </template>
+    </UTable>
+
+    <div
+      class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700"
+    >
+      <UPagination
+        v-model="queryString.page"
+        :page-count="queryString.size"
+        :total="data?.totalItems"
+      />
+    </div>
   </div>
+
+  <FormsCrud ref="crudForm" @save="onSave!" />
 </template>

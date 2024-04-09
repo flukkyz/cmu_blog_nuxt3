@@ -8,7 +8,7 @@ interface User {
   password_created_at: string;
 }
 interface ListModel {
-  user?: User;
+  user: User | null;
   loggedIn: boolean;
 }
 
@@ -17,6 +17,7 @@ const endpoint = "auth-member";
 export const authen = defineStore("authen", {
   state: () => {
     return {
+      user: null,
       loggedIn: false,
     } as ListModel;
   },
@@ -91,7 +92,7 @@ export const authen = defineStore("authen", {
     },
     async logout() {
       setToken(null, null);
-      this.user = undefined;
+      this.user = null;
       this.loggedIn = false;
       const { error, status } = await useIFetch(`${endpoint}/logout`, {
         method: "DELETE",
@@ -107,15 +108,6 @@ export const authen = defineStore("authen", {
   },
 });
 
-const setToken = (
-  newAccessToken: string | null,
-  newRefreshToken: string | null
-) => {
-  const accessToken = useCookie("accessToken");
-  const refreshToken = useCookie("refreshToken");
-  accessToken.value = newAccessToken;
-  refreshToken.value = newRefreshToken;
-};
 const getToken = () => {
   const accessToken = useCookie("accessToken");
   const refreshToken = useCookie("refreshToken");
@@ -124,6 +116,14 @@ const getToken = () => {
 const hasToken = (): boolean => {
   const { accessToken, refreshToken } = getToken();
   return !!accessToken.value && !!refreshToken.value;
+};
+const setToken = (
+  newAccessToken: string | null,
+  newRefreshToken: string | null
+) => {
+  const { accessToken, refreshToken } = getToken();
+  accessToken.value = newAccessToken;
+  refreshToken.value = newRefreshToken;
 };
 
 const fetchApiUser = async () => {
