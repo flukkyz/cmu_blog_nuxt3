@@ -7,10 +7,21 @@
           divide: 'divide-y divide-gray-100 dark:divide-gray-800',
         }"
       >
-        <template #header> CURD </template>
+        <template #header>
+          <div class="flex items-start justify-between">
+            <p class="font-bold">CRUD</p>
+            <UButton
+              size="2xs"
+              icon="i-fa6-solid-xmark"
+              color="gray"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="isOpen = false"
+            />
+          </div>
+        </template>
 
         <UFormGroup label="Title" name="name">
-          <UInput v-model="state.name" />
+          <UInput v-model="state.name" autofocus />
         </UFormGroup>
 
         <template #footer>

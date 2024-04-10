@@ -14,6 +14,11 @@ declare global {
     src: string;
   }
 
+  interface DefaultSelectOptions {
+    label: string | number;
+    value: string | number;
+  }
+
   interface NavigationLinkItem {
     label: string;
     to?: RouteLocationRaw;

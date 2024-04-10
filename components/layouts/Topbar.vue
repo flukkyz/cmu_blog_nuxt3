@@ -32,7 +32,7 @@ const languages = computed(() =>
 </script>
 
 <template>
-  <div class="sticky top-0 max-md:py-3 md:py-1 shadow-xl bg-white z-10">
+  <div class="sticky top-0 max-md:py-3 md:py-1 shadow bg-white z-10">
     <div
       class="container mx-auto max-md:px-3 flex items-center justify-between"
     >

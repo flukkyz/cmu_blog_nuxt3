@@ -70,7 +70,7 @@ const onResendVerify = async () => {
     <UForm :state="body" class="space-y-4" @submit="onLogin">
       <UCard class="min-w-80 shadow-xl">
         <template #header>
-          <p class="font-bold">
+          <p class="font-bold text-2xl">
             {{ $t("LOGIN") }}
           </p>
         </template>

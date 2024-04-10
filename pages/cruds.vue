@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FormsCrud } from "#components";
+import { FormsCrud, AlertDialog } from "#components";
 import type { Crud } from "~/components/forms/Crud.vue";
 
 const localePath = useLocalePath();
@@ -34,8 +34,6 @@ const columns = [
   },
 ];
 
-const currentData = ref();
-
 const { data, pending, refresh, create, update, destroy } = await useCruds(
   queryString
 );
@@ -51,12 +49,6 @@ const checkLastPage = () => {
   }
 };
 watch(data, checkLastPage);
-
-const destroyItem = async (id: number) => {
-  await destroy(id);
-  refresh();
-  loading().show();
-};
 
 const crudForm = ref<InstanceType<typeof FormsCrud> | null>(null);
 const createItem = () => {
@@ -86,34 +78,130 @@ const onSave = async (data: Crud, mode: Mode) => {
   }
   refresh();
 };
+
+const alertNotice = ref<InstanceType<typeof AlertDialog> | null>(null);
+const onNotice = () => {
+  alertNotice.value?.show();
+};
+const alertConfirm = ref<InstanceType<typeof AlertDialog> | null>(null);
+const onConfirm = () => {
+  alertConfirm.value?.show();
+};
+const alertDelete = ref<InstanceType<typeof AlertDialog> | null>(null);
+const onDelete = (data: Crud) => {
+  alertDelete.value?.show(data.id, "Delete?", `Confirm delete ${data.name}?`);
+};
+const destroyItem = async (id: number) => {
+  await destroy(id);
+  refresh();
+  loading().show();
+};
 </script>
 
 <template>
+  <UButton label="notice" @click="onNotice()" />
+  <UButton label="confirm" @click="onConfirm()" />
   <div>
-    <div
-      class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700"
+    <UCard
+      class="w-full"
+      :ui="{
+        divide: 'divide-y divide-gray-200 dark:divide-gray-700',
+        header: { padding: 'p-4 sm:p-4' },
+        body: {
+          padding: '',
+          base: 'divide-y divide-gray-200 dark:divide-gray-700',
+        },
+        footer: { padding: 'p-4 sm:p-4' },
+      }"
     >
-      <UInput v-model="queryString.q" placeholder="Filter title..." />
-      <UButton label="Create" @click="createItem" />
-    </div>
+      <template #header>
+        <div class="flex items-center gap-x-3">
+          <h2
+            class="font-bold text-xl text-gray-900 dark:text-white leading-tight"
+          >
+            CRUDs
+          </h2>
+          <UInput
+            v-model="queryString.q"
+            icon="i-fa6-solid-magnifying-glass"
+            placeholder="Search..."
+          />
 
-    <UTable :rows="data?.rows" :columns="columns" :loading="pending">
-      <template #actions-data="{ row }">
-        <UButton label="update" @click="updateItem(row)" />
-        <UButton label="delete" @click="destroyItem(row.id)" />
+          <UButton label="Create" @click="createItem" class="ml-auto" />
+        </div>
       </template>
-    </UTable>
 
-    <div
-      class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700"
-    >
-      <UPagination
-        v-model="queryString.page"
-        :page-count="queryString.size"
-        :total="data?.totalItems"
-      />
-    </div>
+      <UTable :rows="data?.rows" :columns="columns" :loading="pending">
+        <template #actions-data="{ row }">
+          <div class="flex flex-1 justify-end gap-x-2 text-lg">
+            <UTooltip :text="$t('EDIT')">
+              <UButton
+                icon="i-fa6-solid-pen-to-square"
+                color="warning"
+                size="2xs"
+                :ui="{ rounded: 'rounded-full' }"
+                @click="updateItem(row)"
+              />
+            </UTooltip>
+            <UButton
+              icon="i-fa6-solid-trash-can"
+              color="error"
+              size="2xs"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="onDelete(row)"
+            />
+          </div>
+        </template>
+      </UTable>
+
+      <template #footer>
+        <div class="flex flex-wrap justify-between items-center">
+          <span class="text-sm">
+            Showing
+            <span class="font-medium">
+              {{ (queryString.page - 1) * queryString.size + 1 }}
+            </span>
+            to
+            <span class="font-medium">
+              {{
+                Math.min(
+                  queryString.page * queryString.size,
+                  data?.totalItems || queryString.page * queryString.size
+                )
+              }}
+            </span>
+            of
+            <span class="font-medium">{{ data?.totalItems }}</span>
+            results
+          </span>
+
+          <div class="flex items-center gap-x-3">
+            Rows per page
+            <USelect
+              v-model="queryString.size"
+              :options="references().rowsPerPages"
+              class="w-20"
+            />
+            <UPagination
+              v-model="queryString.page"
+              :page-count="queryString.size"
+              :total="data?.totalItems"
+            />
+          </div>
+        </div>
+      </template>
+    </UCard>
   </div>
-
   <FormsCrud ref="crudForm" @save="onSave!" />
+  <AlertDialog ref="alertNotice" type="notice">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ea
+    ipsam sequi assumenda porro esse mollitia repellendus quo, rerum quod labore
+    architecto vero error aliquam. Id neque unde repellendus assumenda?
+  </AlertDialog>
+  <AlertDialog ref="alertDelete" type="delete" @confirm="destroyItem" />
+  <AlertDialog ref="alertConfirm" type="confirm">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ea
+    ipsam sequi assumenda porro esse mollitia repellendus quo, rerum quod labore
+    architecto vero error aliquam. Id neque unde repellendus assumenda?
+  </AlertDialog>
 </template>

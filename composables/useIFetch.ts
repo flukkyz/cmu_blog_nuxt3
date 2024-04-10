@@ -10,7 +10,7 @@ export const useIFetch = <T>(
 
   const defaults: UseFetchOptions<T> = {
     baseURL,
-    key: endpoint,
+    // key: endpoint,
     headers: accessToken.value
       ? { Authorization: `Bearer ${accessToken.value}` }
       : {},
@@ -20,7 +20,7 @@ export const useIFetch = <T>(
 
         const refreshToken = useCookie("refreshToken");
         if (refreshToken.value) {
-          const { data, status, error } = await useFetch<{
+          const { data, error } = await useFetch<{
             accessToken: string;
           }>(`${baseURL}auth-member/token`, {
             method: "POST",
