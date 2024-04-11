@@ -1,15 +1,16 @@
-interface MenuModel {
-  frontend: NavigationLinkItem[][];
-  backend: NavigationLinkItem[][];
-  profile: NavigationLinkItem[][];
-  guest: NavigationLinkItem[];
-}
-
-const localePath = useLocalePath();
-
-export const menus = defineStore("menus", {
-  state: () => {
-    return {
+export default () => {
+  const { t } = useI18n();
+  const localePath = useLocalePath();
+  return {
+    rowsPerPages: [
+      { value: 10, label: 10 },
+      { value: 20, label: 20 },
+      { value: 30, label: 30 },
+      { value: 50, label: 50 },
+      { value: 100, label: 100 },
+      { value: -1, label: t("ALL") },
+    ],
+    menus: {
       frontend: [
         [
           {
@@ -18,13 +19,13 @@ export const menus = defineStore("menus", {
             to: localePath({ name: "blogs" }),
           },
           {
-            label: "CRUD",
+            label: "CRUDs",
             icon: "i-fa6-solid-cube",
             to: localePath({ name: "cruds" }),
           },
           {
-            label: "About",
-            icon: "i-fa6-solid-cube",
+            label: t("ABOUT"),
+            icon: "i-fa6-solid-circle-info",
             to: localePath({ name: "about" }),
           },
         ],
@@ -33,14 +34,14 @@ export const menus = defineStore("menus", {
       profile: [
         [
           {
-            label: "Profile",
+            label: t("PROFILE"),
             icon: "i-fa6-solid-user-pen",
             to: localePath({ name: "profile" }),
           },
         ],
         [
           {
-            label: useT("LOGOUT"),
+            label: t("LOGOUT"),
             icon: "i-fa6-solid-right-from-bracket",
             to: localePath({ name: "logout" }),
           },
@@ -48,16 +49,16 @@ export const menus = defineStore("menus", {
       ],
       guest: [
         {
-          label: useT("LOGIN"),
+          label: t("LOGIN"),
           icon: "i-fa6-solid-right-to-bracket",
           to: localePath({ name: "login" }),
         },
         {
-          label: useT("SIGNUP"),
+          label: t("SIGNUP"),
           icon: "i-fa6-solid-user-plus",
           to: localePath({ name: "register" }),
         },
       ],
-    } as MenuModel;
-  },
-});
+    },
+  };
+};

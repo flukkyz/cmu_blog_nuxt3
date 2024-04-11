@@ -2,7 +2,7 @@
 const auth = authen();
 const side = sidebar();
 const localePath = useLocalePath();
-const menu = menus();
+const menus = useReferences().menus;
 
 const drawer = computed({
   get() {
@@ -49,7 +49,7 @@ defineShortcuts({
         </NuxtLink>
       </template>
 
-      <UVerticalNavigation class="h-full" :links="menu.frontend" />
+      <UVerticalNavigation class="h-full" :links="menus.frontend" />
 
       <template #footer>
         <div class="flex flex-col gap-y-3">
@@ -74,7 +74,7 @@ defineShortcuts({
               </p>
             </div>
           </div>
-          <UVerticalNavigation :links="menu.profile" />
+          <UVerticalNavigation :links="menus.profile" />
         </div>
       </template>
     </UCard>

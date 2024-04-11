@@ -10,8 +10,8 @@ const props = withDefaults(
     closeBtnText?: string;
     confirmBtnColor?: string;
     confirmBtnText?: string;
-    header?: string;
     isCloseBtn?: boolean;
+    size?: "sm" | "lg" | "xl";
   }>(),
   {
     closeBtnColor: "",
@@ -20,8 +20,9 @@ const props = withDefaults(
   }
 );
 
-const dialogDetailTitle = ref<string>("");
-const dialogDetailDetail = ref<string>("");
+const titleText = ref<string>("");
+const headerText = ref<string>(t("DELETE_DATA"));
+const detailText = ref<string>(t("CONFIRM_DELETE"));
 
 const isNotice = computed<boolean>(() => {
   return props.type === "notice";
@@ -39,7 +40,21 @@ const renderCloseBtnText = computed<string>(() => {
     : t("CANCEL");
 });
 const renderConfirmBtnText = computed<string>(() => {
-  return props.confirmBtnText ? props.confirmBtnText : t("CONFIRM");
+  return props.confirmBtnText
+    ? props.confirmBtnText
+    : isDelete.value
+    ? t("DELETE")
+    : t("CONFIRM");
+});
+
+const renderSize = computed<string>(() => {
+  return props.size
+    ? `sm:max-w-${props.size}`
+    : isNotice.value
+    ? "sm:max-w-md"
+    : isDelete.value
+    ? "sm:max-w-sm"
+    : "";
 });
 
 const isOpen = ref<boolean>(false);
@@ -59,10 +74,16 @@ const onClose = (): void => {
   isOpen.value = false;
 };
 
-const show = (data?: any, title?: string, detail?: string): void => {
+const show = (
+  title?: string,
+  data?: any,
+  header?: string,
+  detail?: string
+): void => {
   payload.value = data;
-  if (title) dialogDetailTitle.value = title;
-  if (detail) dialogDetailDetail.value = detail;
+  if (title) titleText.value = title;
+  if (header) headerText.value = header;
+  if (detail) detailText.value = detail;
   isOpen.value = true;
 };
 
@@ -77,7 +98,11 @@ defineExpose({
 </script>
 
 <template>
-  <UModal v-model="isOpen" prevent-close>
+  <UModal
+    v-model="isOpen"
+    prevent-close
+    :ui="{ width: `w-full ${renderSize}` }"
+  >
     <UCard
       :ui="{
         ring: '',
@@ -85,23 +110,29 @@ defineExpose({
       }"
     >
       <div class="flex flex-col gap-y-5">
-        <slot>
-          <div v-if="isDelete" class="flex flex-col">
-            <UIcon name="i-fa6-solid-trash-can" class="text-xl" />
-            <h1 v-if="dialogDetailTitle">
-              {{ dialogDetailTitle }}
-            </h1>
-            <p v-if="dialogDetailDetail">
-              {{ dialogDetailDetail }}
-            </p>
+        <slot :payload="payload" :title="headerText" :detail="detailText">
+          <div v-if="isDelete" class="flex items-center justify-center gap-x-3">
+            <UIcon
+              name="i-fa6-solid-trash-can"
+              class="text-4xl text-error-600"
+            />
+            <div class="flex flex-col">
+              <h1 v-if="headerText" class="text-xl font-bold text-error-600">
+                {{ headerText }}
+              </h1>
+              <p v-if="detailText" class="text-sm text-error-600">
+                {{ detailText }}
+                {{ titleText }}
+              </p>
+            </div>
           </div>
         </slot>
         <div class="flex justify-evenly items-center">
           <UButton
             v-if="isCloseBtn"
             size="xl"
-            :color="isNotice ? 'info' : 'gray'"
-            :class="closeBtnColor || (isNotice ? 'px-8' : '')"
+            :color="closeBtnColor || (isNotice ? 'info' : 'gray')"
+            class="min-w-20 justify-center text-center"
             :label="renderCloseBtnText"
             @click="onClose"
           />
@@ -110,6 +141,7 @@ defineExpose({
             v-if="!isNotice"
             size="xl"
             :color="confirmBtnColor || (isDelete ? 'error' : 'primary')"
+            class="min-w-20 justify-center text-center"
             :label="renderConfirmBtnText"
             @click="onConfirm"
           />

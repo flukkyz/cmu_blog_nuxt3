@@ -1,3 +1,5 @@
+import { number } from "yup";
+
 export default async (query: Record<string, any>) => {
   interface Crud {
     id?: number;
@@ -24,5 +26,7 @@ export default async (query: Record<string, any>) => {
     create: async (body: Crud) => await api.create(body),
     update: async (id: number, body: Crud) => await api.update(id, body),
     destroy: async (id: number) => await api.destroy(id),
+    deletes: async (ids: number[]) =>
+      useIFetch(`${endpoint}/delete`, { method: "POST", body: { ids } }),
   };
 };

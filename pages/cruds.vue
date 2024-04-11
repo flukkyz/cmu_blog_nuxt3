@@ -5,6 +5,19 @@ import type { Crud } from "~/components/forms/Crud.vue";
 const localePath = useLocalePath();
 const { t } = useI18n();
 const toast = useToast();
+const modelName = " CRUDs ";
+
+definePageMeta({
+  middleware: "auth",
+});
+useSeoMeta(
+  seoTag({
+    title: modelName,
+    description: "A Simple CRUDs in Nuxt3",
+    keywords: "crud",
+    urlPath: `${useRuntimeConfig().public.apiBase}${useRoute().fullPath}`,
+  })
+);
 
 breadcrumbs().setItems([
   {
@@ -13,7 +26,7 @@ breadcrumbs().setItems([
     icon: "i-fa6-solid-house",
   },
   {
-    label: "CRUDs",
+    label: modelName,
     icon: "i-fa6-solid-cube",
   },
 ]);
@@ -34,9 +47,18 @@ const columns = [
   },
 ];
 
-const { data, pending, refresh, create, update, destroy } = await useCruds(
-  queryString
-);
+const selected = ref<Crud[]>([]);
+const onSelect = (row: Crud) => {
+  const index = useFindIndex(selected.value, { id: row.id });
+  if (index === -1) {
+    selected.value.push(row);
+  } else {
+    selected.value.splice(index, 1);
+  }
+};
+
+const { data, pending, refresh, create, update, destroy, deletes } =
+  await useCruds(queryString);
 
 const checkLastPage = () => {
   if (
@@ -79,28 +101,26 @@ const onSave = async (data: Crud, mode: Mode) => {
   refresh();
 };
 
-const alertNotice = ref<InstanceType<typeof AlertDialog> | null>(null);
-const onNotice = () => {
-  alertNotice.value?.show();
-};
-const alertConfirm = ref<InstanceType<typeof AlertDialog> | null>(null);
-const onConfirm = () => {
-  alertConfirm.value?.show();
-};
 const alertDelete = ref<InstanceType<typeof AlertDialog> | null>(null);
-const onDelete = (data: Crud) => {
-  alertDelete.value?.show(data.id, "Delete?", `Confirm delete ${data.name}?`);
+const deleteItem = (data: Crud) => {
+  alertDelete.value?.show(data.name, data.id);
 };
-const destroyItem = async (id: number) => {
+const onDelete = async (id: number) => {
   await destroy(id);
   refresh();
-  loading().show();
+};
+
+const alertDeleteSelected = ref<InstanceType<typeof AlertDialog> | null>(null);
+const deleteSelected = () => {
+  alertDeleteSelected.value?.show(t("_SELECTED", { text: modelName }));
+};
+const onDeleteSelected = async () => {
+  await deletes(selected.value.map((ele) => ele.id!));
+  refresh();
 };
 </script>
 
 <template>
-  <UButton label="notice" @click="onNotice()" />
-  <UButton label="confirm" @click="onConfirm()" />
   <div>
     <UCard
       class="w-full"
@@ -119,21 +139,47 @@ const destroyItem = async (id: number) => {
           <h2
             class="font-bold text-xl text-gray-900 dark:text-white leading-tight"
           >
-            CRUDs
+            {{ modelName }}
           </h2>
           <UInput
             v-model="queryString.q"
             icon="i-fa6-solid-magnifying-glass"
-            placeholder="Search..."
+            :placeholder="`${$t('SEARCH')}...`"
           />
 
-          <UButton label="Create" @click="createItem" class="ml-auto" />
+          <UButton
+            icon="i-fa6-solid-plus"
+            :label="$t('ADD_', { text: $t('NEW_', { text: modelName }) })"
+            @click="createItem"
+            class="ml-auto"
+          />
         </div>
       </template>
 
-      <UTable :rows="data?.rows" :columns="columns" :loading="pending">
+      <UTable
+        v-model="selected"
+        :rows="data?.rows"
+        :columns="columns"
+        :loading="pending"
+        @select="onSelect"
+      >
+        <template #actions-header="{ column }">
+          <div
+            v-if="selected.length > 0"
+            class="flex flex-1 justify-end gap-x-2"
+          >
+            <UButton
+              icon="i-fa6-solid-trash-can"
+              color="error"
+              size="2xs"
+              :label="$t('_SELECTED', { text: $t('DELETE') })"
+              @click="deleteSelected"
+            />
+          </div>
+        </template>
+
         <template #actions-data="{ row }">
-          <div class="flex flex-1 justify-end gap-x-2 text-lg">
+          <div class="flex flex-1 justify-end gap-x-2">
             <UTooltip :text="$t('EDIT')">
               <UButton
                 icon="i-fa6-solid-pen-to-square"
@@ -143,65 +189,71 @@ const destroyItem = async (id: number) => {
                 @click="updateItem(row)"
               />
             </UTooltip>
-            <UButton
-              icon="i-fa6-solid-trash-can"
-              color="error"
-              size="2xs"
-              :ui="{ rounded: 'rounded-full' }"
-              @click="onDelete(row)"
-            />
+            <UTooltip :text="$t('DELETE')">
+              <UButton
+                icon="i-fa6-solid-trash-can"
+                color="error"
+                size="2xs"
+                :ui="{ rounded: 'rounded-full' }"
+                @click="deleteItem(row)"
+              />
+            </UTooltip>
           </div>
         </template>
       </UTable>
 
       <template #footer>
-        <div class="flex flex-wrap justify-between items-center">
-          <span class="text-sm">
-            Showing
-            <span class="font-medium">
+        <div
+          class="flex flex-wrap justify-between items-center gap-3 text-sm font-medium"
+        >
+          <p v-if="data" class="">
+            {{ $t("SHOWING") }}
+            <span v-if="data.totalPages > 1">
               {{ (queryString.page - 1) * queryString.size + 1 }}
-            </span>
-            to
-            <span class="font-medium">
+              {{ $t("TO") }}
               {{
                 Math.min(
                   queryString.page * queryString.size,
-                  data?.totalItems || queryString.page * queryString.size
+                  data.totalItems || queryString.page * queryString.size
                 )
               }}
+              {{ $t("OF") }}
             </span>
-            of
-            <span class="font-medium">{{ data?.totalItems }}</span>
-            results
-          </span>
+            {{ data.totalItems }}
+            {{ data.totalItems! > 1 ? $t("RESULTS") : $t("RESULT") }}
+          </p>
 
-          <div class="flex items-center gap-x-3">
-            Rows per page
-            <USelect
-              v-model="queryString.size"
-              :options="references().rowsPerPages"
-              class="w-20"
-            />
-            <UPagination
-              v-model="queryString.page"
-              :page-count="queryString.size"
-              :total="data?.totalItems"
-            />
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-x-2">
+              <p class="text-gray-500">
+                {{ $t("ROWS_PER_PAGE") }}
+              </p>
+              <USelect
+                v-model="queryString.size"
+                :options="useReferences().rowsPerPages"
+                class="w-24"
+              />
+            </div>
+            <div v-if="data?.totalPages! > 1" class="flex items-center gap-x-2">
+              <p class="text-gray-500">
+                {{ $t("PAGE") }}
+              </p>
+              <UPagination
+                v-model="queryString.page"
+                :page-count="queryString.size"
+                :total="data?.totalItems"
+              />
+            </div>
           </div>
         </div>
       </template>
     </UCard>
   </div>
   <FormsCrud ref="crudForm" @save="onSave!" />
-  <AlertDialog ref="alertNotice" type="notice">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ea
-    ipsam sequi assumenda porro esse mollitia repellendus quo, rerum quod labore
-    architecto vero error aliquam. Id neque unde repellendus assumenda?
-  </AlertDialog>
-  <AlertDialog ref="alertDelete" type="delete" @confirm="destroyItem" />
-  <AlertDialog ref="alertConfirm" type="confirm">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ea
-    ipsam sequi assumenda porro esse mollitia repellendus quo, rerum quod labore
-    architecto vero error aliquam. Id neque unde repellendus assumenda?
-  </AlertDialog>
+  <AlertDialog ref="alertDelete" type="delete" @confirm="onDelete" />
+  <AlertDialog
+    ref="alertDeleteSelected"
+    type="delete"
+    @confirm="onDeleteSelected"
+  />
 </template>
