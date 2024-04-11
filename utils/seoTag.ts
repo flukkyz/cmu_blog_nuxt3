@@ -26,6 +26,11 @@ export default (data: SEOData) => {
     title: dataTitle,
     meta: [
       {
+        hid: "title",
+        name: "title",
+        content: dataTitle,
+      },
+      {
         hid: "description",
         name: "description",
         content: dataDescription,
@@ -46,7 +51,7 @@ export default (data: SEOData) => {
       {
         property: "og:type",
         name: "og:type",
-        content: "article",
+        content: "website",
       },
       {
         property: "og:description",
@@ -80,6 +85,12 @@ export default (data: SEOData) => {
         property: "twitter:site",
         name: "twitter:site",
         content: "@publisher_handle",
+      },
+      {
+        property: "twitter:url",
+        name: "twitter:url",
+        content:
+          data.urlPath || (config.metaDefaultUrl ? config.metaDefaultUrl : ""),
       },
       {
         property: "twitter:title",

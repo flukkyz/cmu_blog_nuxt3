@@ -31,6 +31,7 @@ export const useIFetch = <T>(
             throw createError({
               statusCode: error.value.statusCode,
               statusMessage: error.value.statusMessage,
+              fatal: true,
             });
           }
 
@@ -39,7 +40,7 @@ export const useIFetch = <T>(
             accessToken.value = newToken;
 
             options.headers = { Authorization: `Bearer ${newToken}` };
-            useFetch(endpoint, options as UseFetchOptions<T>);
+            return useFetch(endpoint, options as UseFetchOptions<T>);
           }
         }
       }

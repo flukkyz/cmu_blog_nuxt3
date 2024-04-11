@@ -97,12 +97,12 @@ export const authen = defineStore("authen", {
       const { error, status } = await useIFetch(`${endpoint}/logout`, {
         method: "DELETE",
       });
-      if (error.value) {
-        throw createError({
-          statusCode: error.value.statusCode,
-          statusMessage: error.value.statusMessage,
-        });
-      }
+      // if (error.value) {
+      //   throw createError({
+      //     statusCode: error.value.statusCode,
+      //     statusMessage: error.value.statusMessage,
+      //   });
+      // }
       return { status };
     },
   },

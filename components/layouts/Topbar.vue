@@ -5,7 +5,6 @@ const auth = authen();
 const { setLocale, locales, locale } = useI18n();
 const localePath = useLocalePath();
 const side = sidebar();
-const menus = useReferences().menus;
 
 const toggleDrawer = () => {
   side.drawer = !side.drawer;
@@ -18,7 +17,7 @@ const profileMenus = computed(() => [
       disabled: true,
     },
   ],
-  ...menus.profile,
+  ...useReferences().menus.profile,
 ]);
 
 const languages = computed(() => [
@@ -68,7 +67,7 @@ const languages = computed(() => [
 
         <UHorizontalNavigation
           class="max-md:hidden"
-          :links="menus.frontend.flat(1)"
+          :links="useReferences().menus.frontend.flat(1)"
         />
       </div>
 
@@ -108,7 +107,7 @@ const languages = computed(() => [
             />
           </template>
         </UDropdown>
-        <UHorizontalNavigation v-else :links="menus.guest" />
+        <UHorizontalNavigation v-else :links="useReferences().menus.guest" />
         <UDropdown
           :items="languages"
           :popper="{ placement: 'bottom-end' }"

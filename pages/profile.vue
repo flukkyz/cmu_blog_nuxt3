@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const auth = authen();
+await auth.fetchUser();
 
 // definePageMeta({
 //   middleware: "auth",

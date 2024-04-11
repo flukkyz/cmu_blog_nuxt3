@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: "auth",
-});
+// definePageMeta({
+//   middleware: "auth",
+// });
 
 const dt2 = datetime.toText(new Date());
 const dt3 = datetime.age(new Date());

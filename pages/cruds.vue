@@ -116,6 +116,7 @@ const deleteSelected = () => {
 };
 const onDeleteSelected = async () => {
   await deletes(selected.value.map((ele) => ele.id!));
+  selected.value = [];
   refresh();
 };
 </script>
@@ -135,30 +136,35 @@ const onDeleteSelected = async () => {
       }"
     >
       <template #header>
-        <div class="flex items-center gap-x-3">
+        <div class="flex flex-wrap max-md:items-baseline items-center gap-3">
           <h2
-            class="font-bold text-xl text-gray-900 dark:text-white leading-tight"
+            class="font-bold text-xl text-gray-900 dark:text-white leading-tight shrink-0"
           >
             {{ modelName }}
           </h2>
-          <UInput
-            v-model="queryString.q"
-            icon="i-fa6-solid-magnifying-glass"
-            :placeholder="`${$t('SEARCH')}...`"
-          />
+          <div
+            class="grow flex max-md:flex-col items-end justify-between gap-3"
+          >
+            <UInput
+              v-model="queryString.q"
+              icon="i-fa6-solid-magnifying-glass"
+              class="max-md:order-last"
+              :placeholder="`${$t('SEARCH')}...`"
+            />
 
-          <UButton
-            icon="i-fa6-solid-plus"
-            :label="$t('ADD_', { text: $t('NEW_', { text: modelName }) })"
-            @click="createItem"
-            class="ml-auto"
-          />
+            <UButton
+              icon="i-fa6-solid-plus"
+              :label="$t('ADD_', { text: $t('NEW_', { text: modelName }) })"
+              @click="createItem"
+            />
+          </div>
         </div>
       </template>
 
       <UTable
         v-model="selected"
         :rows="data?.rows"
+        by="id"
         :columns="columns"
         :loading="pending"
         @select="onSelect"
