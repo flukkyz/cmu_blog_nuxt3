@@ -30,29 +30,6 @@ export const useIFetch = <T>(
         } catch (error) {
           return error;
         }
-
-        // const { data, error } = await useFetch<{
-        //   accessToken: string;
-        // }>(`${baseURL}auth-member/token`, {
-        //   method: "POST",
-        //   body: { refreshToken: refreshToken.value },
-        // });
-
-        // if (error.value) {
-        //   throw createError({
-        //     statusCode: error.value.statusCode,
-        //     statusMessage: error.value.statusMessage,
-        //     fatal: true,
-        //   });
-        // }
-
-        // if (data.value) {
-        //   const newToken = data.value?.accessToken;
-        //   accessToken.value = newToken;
-
-        //   options.headers = { Authorization: `Bearer ${newToken}` };
-        //   return useFetch(endpoint, options as UseFetchOptions<T>);
-        // }
       }
     },
   };
