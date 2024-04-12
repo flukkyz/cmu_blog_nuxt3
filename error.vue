@@ -52,11 +52,9 @@ useHead({
 });
 
 const auth = authen();
-const localePath = useLocalePath();
 if (props.error?.statusCode === 401) {
   setTimeout(async () => {
-    await auth.logout();
-    useRouter().push(localePath({ name: "login" }));
+    clearError({ redirect: "/logout" });
   }, 5000);
 }
 

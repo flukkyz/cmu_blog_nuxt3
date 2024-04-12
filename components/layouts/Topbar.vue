@@ -125,7 +125,9 @@ const languages = computed(() => [
             size="lg"
             color="gray"
             :ui="{
-              position: { 'top-right': 'top-1 right-2' },
+              position: {
+                'top-right': auth.loggedIn ? 'top-1 right-2' : 'top-3 right-2',
+              },
               size: { lg: 'h-4 pt-1.5 px-1' },
             }"
           >

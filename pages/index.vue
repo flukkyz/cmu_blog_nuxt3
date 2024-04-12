@@ -6,14 +6,6 @@
 const dt2 = datetime.toText(new Date());
 const dt3 = datetime.age(new Date());
 const arr = "asdf";
-
-const auth = authen();
-const router = useRouter();
-const localePath = useLocalePath();
-const onLogout = async () => {
-  await auth.logout();
-  router.push(localePath({ name: "login" }));
-};
 </script>
 
 <template>
