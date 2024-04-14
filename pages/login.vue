@@ -1,14 +1,19 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const localePath = useLocalePath();
+const auth = authen();
+const router = useRouter();
+const modelName = t("LOGIN");
+
 definePageMeta({
   layout: "blank",
   middleware: "guest",
 });
-useSeoMeta(
-  seoTag({
-    title: t("LOGIN"),
-  })
-);
+useHead({
+  title: modelName,
+});
+breadcrumbs().clear();
+
 const body = reactive({
   username: "",
   password: "",
@@ -26,9 +31,7 @@ const clearInvalid = () => {
   noVerify.value = false;
   inactive.value = false;
 };
-const auth = authen();
-const router = useRouter();
-const localePath = useLocalePath();
+
 const { error, status, login } = await auth.login(body);
 
 const onLogin = async () => {
@@ -71,7 +74,7 @@ const onResendVerify = async () => {
       <UCard class="min-w-80 shadow-xl">
         <template #header>
           <p class="font-bold text-2xl">
-            {{ $t("LOGIN") }}
+            {{ modelName }}
           </p>
         </template>
 
@@ -127,7 +130,7 @@ const onResendVerify = async () => {
               type="submit"
               block
               size="lg"
-              :label="$t('LOGIN')"
+              :label="modelName"
               :disabled="
                 status === 'pending' || !body.username || !body.password
               "

@@ -7,11 +7,9 @@ const modelName = t("ABOUT");
 definePageMeta({
   middleware: "auth",
 });
-useSeoMeta(
-  seoTag({
-    title: modelName,
-  })
-);
+useHead({
+  title: modelName,
+});
 
 breadcrumbs().setItems([
   {

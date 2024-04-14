@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const auth = authen();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const auth = authen();
 const router = useRouter();
 
 definePageMeta({
@@ -11,6 +11,7 @@ definePageMeta({
 useHead({
   title: t("LOGOUT"),
 });
+breadcrumbs().clear();
 
 await auth.logout();
 router.push(localePath({ name: "login" }));

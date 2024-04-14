@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+breadcrumbs().clear();
+</script>
 
 <template>
   <div>register</div>

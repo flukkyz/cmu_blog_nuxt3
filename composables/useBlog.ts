@@ -1,5 +1,3 @@
-import { number } from "yup";
-
 export default () => {
   interface Img {
     url: string;

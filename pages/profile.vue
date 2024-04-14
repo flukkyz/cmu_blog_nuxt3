@@ -1,10 +1,28 @@
 <script setup lang="ts">
+const { t } = useI18n();
+const localePath = useLocalePath();
 const auth = authen();
+const modelName = t("PROFILE");
+
 await auth.fetchUser();
 
-// definePageMeta({
-//   middleware: "auth",
-// });
+definePageMeta({
+  middleware: "auth",
+});
+useHead({
+  title: modelName,
+});
+breadcrumbs().setItems([
+  {
+    label: t("HOME"),
+    to: localePath({ name: "index" }),
+    icon: "i-fa6-solid-house",
+  },
+  {
+    label: modelName,
+    icon: "i-fa6-solid-cube",
+  },
+]);
 </script>
 
 <template>

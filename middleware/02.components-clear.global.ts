@@ -1,4 +1,4 @@
 export default defineNuxtRouteMiddleware(() => {
-  breadcrumbs().clear();
+  // breadcrumbs().clear();
   sidebar().drawer = false;
 });

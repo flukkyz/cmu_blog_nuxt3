@@ -1,5 +1,3 @@
-import { number } from "yup";
-
 export default async (query: Record<string, any>) => {
   interface Crud {
     id?: number;

@@ -19,7 +19,7 @@ export default () => {
             to: localePath({ name: "blogs" }),
           },
           {
-            label: "CRUDs",
+            label: "CRUD",
             icon: "i-fa6-solid-cube",
             to: localePath({ name: "cruds" }),
           },

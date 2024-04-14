@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { AlertDialog } from "#components";
 
-const localePath = useLocalePath();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const toast = useIToast();
 const modelName = " Blog ";
 
@@ -35,7 +35,7 @@ const queryString = ref({
   q: "",
 });
 
-const { pagination, destroy } = useBlogs();
+const { pagination, destroy } = useBlog();
 
 const { data, pending, refresh } = await pagination(queryString);
 
@@ -76,20 +76,28 @@ watch(data, checkLastPage);
       v-else-if="data"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2"
     >
-      <div
+      <UCard
         v-for="item in data?.rows"
         :key="item.id"
-        class="border rounded-lg overflow-hidden"
+        :ui="{
+          base: 'overflow-hidden',
+          header: { padding: 'p-0 sm:p-0 ' },
+          body: { padding: 'p-0 sm:p-0 ' },
+          divide: '',
+        }"
       >
-        <NuxtImg
-          src="https://picsum.photos/1000"
-          format="webp"
-          width="300"
-          height="169"
-        />
+        <template #header>
+          <NuxtImg
+            src="https://picsum.photos/1000/500"
+            format="webp"
+            fit="outside"
+          />
+        </template>
         <p class="text-lg">{{ item.title }}</p>
-        <p class="text-gray-500">title</p>
-      </div>
+        <p class="text-gray-500">
+          {{ item.Member.firstname }} {{ item.Member.lastname }}
+        </p>
+      </UCard>
     </div>
   </div>
 </template>
