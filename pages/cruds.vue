@@ -4,7 +4,7 @@ import type { Crud } from "~/components/forms/Crud.vue";
 
 const localePath = useLocalePath();
 const { t } = useI18n();
-const toast = useToast();
+const toast = useIToast();
 const modelName = " CRUDs ";
 
 definePageMeta({
@@ -81,22 +81,17 @@ const updateItem = (data: Crud) => {
 };
 
 const onSave = async (data: Crud, mode: Mode) => {
-  if (mode === "add") {
-    const { error } = await create(data);
-    if (error.value) {
-      toast.add({
-        title: error.value.statusCode?.toString(),
-        description: error.value.statusMessage,
-      });
-    }
+  const { error } =
+    mode === "add" ? await create(data) : await update(data.id!, data);
+  if (error.value) {
+    toast.onError(error.value.statusCode!, error.value.statusMessage!);
   } else {
-    const { error } = await update(data.id!, data);
-    if (error.value) {
-      toast.add({
-        title: error.value.statusCode?.toString(),
-        description: error.value.statusMessage,
-      });
-    }
+    toast.onSuccess(
+      mode === "add" ? t("ADDED") : t("UPDATED"),
+      mode === "add"
+        ? t("ADDED_", { text: modelName })
+        : t("UPDATED_", { text: modelName })
+    );
   }
   refresh();
 };
@@ -106,16 +101,33 @@ const deleteItem = (data: Crud) => {
   alertDelete.value?.show(data.name, data.id);
 };
 const onDelete = async (id: number) => {
-  await destroy(id);
+  const { error } = await destroy(id);
+  if (error.value) {
+    toast.onError(error.value.statusCode!, error.value.statusMessage!);
+  } else {
+    toast.onDelete(t("DELETED"), t("DELETED_", { text: modelName }));
+  }
   refresh();
 };
 
 const alertDeleteSelected = ref<InstanceType<typeof AlertDialog> | null>(null);
 const deleteSelected = () => {
-  alertDeleteSelected.value?.show(t("_SELECTED", { text: modelName }));
+  alertDeleteSelected.value?.show(
+    t("_SELECTED", {
+      text: `${currencyText(selected.value.length)} ${modelName}`,
+    })
+  );
 };
 const onDeleteSelected = async () => {
-  await deletes(selected.value.map((ele) => ele.id!));
+  const { error } = await deletes(selected.value.map((ele) => ele.id!));
+  if (error.value) {
+    toast.onError(error.value.statusCode!, error.value.statusMessage!);
+  } else {
+    toast.onDelete(
+      t("DELETED"),
+      t("DELETED_", { text: t("_SELECTED", { text: modelName }) })
+    );
+  }
   selected.value = [];
   refresh();
 };
@@ -210,47 +222,21 @@ const onDeleteSelected = async () => {
 
       <template #footer>
         <div
+          v-if="data"
           class="flex flex-wrap justify-between items-center gap-3 text-sm font-medium"
         >
-          <p v-if="data" class="">
-            {{ $t("SHOWING") }}
-            <span v-if="data.totalPages > 1">
-              {{ (queryString.page - 1) * queryString.size + 1 }}
-              {{ $t("TO") }}
-              {{
-                Math.min(
-                  queryString.page * queryString.size,
-                  data.totalItems || queryString.page * queryString.size
-                )
-              }}
-              {{ $t("OF") }}
-            </span>
-            {{ data.totalItems }}
-            {{ data.totalItems! > 1 ? $t("RESULTS") : $t("RESULT") }}
-          </p>
-
-          <div class="flex flex-wrap items-center gap-3">
-            <div class="flex items-center gap-x-2">
-              <p class="text-gray-500">
-                {{ $t("ROWS_PER_PAGE") }}
-              </p>
-              <USelect
-                v-model="queryString.size"
-                :options="useReferences().rowsPerPages"
-                class="w-24"
-              />
-            </div>
-            <div v-if="data?.totalPages! > 1" class="flex items-center gap-x-2">
-              <p class="text-gray-500">
-                {{ $t("PAGE") }}
-              </p>
-              <UPagination
-                v-model="queryString.page"
-                :page-count="queryString.size"
-                :total="data?.totalItems"
-              />
-            </div>
-          </div>
+          <ListDataSummary
+            :total-item="data.totalItems"
+            :total-page="data.totalPages"
+            :current-page="queryString.page"
+            :page-size="queryString.size"
+          />
+          <PaginationSize
+            v-model:current-page="queryString.page"
+            v-model:page-size="queryString.size"
+            :total-item="data.totalItems"
+            :total-page="data.totalPages"
+          />
         </div>
       </template>
     </UCard>

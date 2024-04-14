@@ -51,6 +51,15 @@ const emits = defineEmits<{
   (event: "save", value: Crud, mode?: Mode): void;
 }>();
 
+defineShortcuts({
+  escape: {
+    usingInput: true,
+    handler: () => {
+      isOpen.value = false;
+    },
+  },
+});
+
 const clearData = async () => {
   state.value = { name: "" };
 };

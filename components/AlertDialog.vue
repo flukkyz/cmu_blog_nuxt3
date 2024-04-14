@@ -60,6 +60,15 @@ const renderSize = computed<string>(() => {
 const isOpen = ref<boolean>(false);
 const payload = ref<any | undefined>();
 
+defineShortcuts({
+  escape: {
+    usingInput: true,
+    handler: () => {
+      isOpen.value = false;
+    },
+  },
+});
+
 const emit = defineEmits<{
   (e: "confirm", payload: any): void;
   (e: "close", payload: any): void;
