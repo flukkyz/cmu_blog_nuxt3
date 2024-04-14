@@ -10,7 +10,6 @@ definePageMeta({
 useSeoMeta(
   seoTag({
     title: modelName,
-    urlPath: `${useRuntimeConfig().public.apiBase}${useRoute().fullPath}`,
   })
 );
 

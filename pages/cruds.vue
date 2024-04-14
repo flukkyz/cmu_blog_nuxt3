@@ -15,7 +15,6 @@ useSeoMeta(
     title: modelName,
     description: "A Simple CRUDs in Nuxt3",
     keywords: "crud",
-    urlPath: `${useRuntimeConfig().public.apiBase}${useRoute().fullPath}`,
   })
 );
 

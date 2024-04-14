@@ -61,8 +61,11 @@ export default (data: SEOData) => {
       {
         property: "og:url",
         name: "og:url",
-        content:
-          data.urlPath || (config.metaDefaultUrl ? config.metaDefaultUrl : ""),
+        content: data.urlPath
+          ? `${config.public.webBase}${useRoute().fullPath}`
+          : config.metaDefaultUrl
+          ? config.metaDefaultUrl
+          : "",
       },
       {
         property: "og:site_name",
@@ -89,8 +92,11 @@ export default (data: SEOData) => {
       {
         property: "twitter:url",
         name: "twitter:url",
-        content:
-          data.urlPath || (config.metaDefaultUrl ? config.metaDefaultUrl : ""),
+        content: data.urlPath
+          ? `${config.public.webBase}${useRoute().fullPath}`
+          : config.metaDefaultUrl
+          ? config.metaDefaultUrl
+          : "",
       },
       {
         property: "twitter:title",
@@ -113,8 +119,11 @@ export default (data: SEOData) => {
     link: [
       {
         rel: "canonical",
-        href:
-          data.urlPath || (config.metaDefaultUrl ? config.metaDefaultUrl : ""),
+        href: data.urlPath
+          ? `${config.public.webBase}${useRoute().fullPath}`
+          : config.metaDefaultUrl
+          ? config.metaDefaultUrl
+          : "",
       },
     ],
   };

@@ -20,7 +20,7 @@ export const useRestAPI = <DataT>(endpoint: string) => {
       },
     });
   };
-  const one = (id: number) => {
+  const one = (id: string | number) => {
     return useIFetch<DataT>(`${endpoint}/${id}`);
   };
   const create = (body: Record<string, any> | FormData) => {
