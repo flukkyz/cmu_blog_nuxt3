@@ -37,7 +37,7 @@ export interface Crud {
   id?: number;
   name: string;
 }
-import { object, string, type InferType } from "yup";
+import { object, string } from "yup";
 
 const isOpen = ref<boolean>(false);
 const mode = ref<Mode>("add");
@@ -60,7 +60,7 @@ defineShortcuts({
   },
 });
 
-const clearData = async () => {
+const clearData = () => {
   state.value = { name: "" };
 };
 
@@ -76,7 +76,7 @@ const onSave = async () => {
 
 const show = async (data?: Crud) => {
   saving.value = false;
-  await clearData();
+  clearData();
   mode.value = "add";
   if (data) {
     mode.value = "edit";

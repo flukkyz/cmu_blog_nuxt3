@@ -51,16 +51,17 @@ useHead({
   title: `${props.error?.statusCode} - ${title}`,
 });
 
-const auth = authen();
-if (props.error?.statusCode === 401) {
-  setTimeout(async () => {
-    clearError({ redirect: "/logout" });
-  }, 5000);
-}
-
 const handleError = () => {
   clearError({ redirect: "/" });
 };
+
+const auth = authen();
+if (props.error?.statusCode === 401) {
+  await auth.logout();
+  setTimeout(async () => {
+    handleError();
+  }, 5000);
+}
 </script>
 
 <template>

@@ -36,6 +36,7 @@
     "@nuxtjs/i18n": "^8.3.0",
     "dayjs-nuxt": "^2.1.9",
     "eslint": "^8.57.0",
-    "nuxt-lodash": "^2.5.3"
+    "nuxt-lodash": "^2.5.3",
+    "nuxt-tiptap-editor": "^1.1.0"
   }
 }

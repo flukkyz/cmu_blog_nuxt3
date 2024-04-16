@@ -141,11 +141,23 @@ export default defineNuxtConfig({
     "nuxt-lodash",
     "@nuxtjs/i18n",
     "@nuxtjs/google-fonts",
+    "nuxt-tiptap-editor",
     "@nuxtjs/robots",
   ],
   css: ["~/assets/main.css"],
   ui: {
     icons: ["mdi", "fa6-solid", "fa6-regular", "fa6-brands"],
+  },
+  image: {
+    providers: {
+      myProvider: {
+        name: "api", // optional value to overrider provider name
+        provider: "~/providers/my-provider.ts", // Path to custom provider
+        options: {
+          baseURL: "http://localhost:5000",
+        },
+      },
+    },
   },
   i18n: {
     defaultLocale: "en",
@@ -183,7 +195,10 @@ export default defineNuxtConfig({
     locales: ["en", "th"],
     defaultLocale: "en",
     defaultTimezone: "Asia/Bangkok",
-    plugins: ["utc", "timezone", "buddhistEra", "localeData"],
+    plugins: ["utc", "timezone", "buddhistEra", "localeData", "relativeTime"],
+  },
+  tiptap: {
+    prefix: "Tiptap", //prefix for Tiptap imports, composables not included
   },
   robots: [
     {

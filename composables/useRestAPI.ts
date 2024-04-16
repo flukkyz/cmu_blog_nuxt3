@@ -1,10 +1,10 @@
 export const useRestAPI = <DataT>(endpoint: string) => {
-  const pagination = (query: Record<string, any>) => {
+  const pagination = (query: Record<string, any> = {}) => {
     return useIFetch<ListPage<DataT>>(endpoint, { query });
   };
   const paginationPost = (
-    query: Record<string, any>,
-    body: Record<string, any>
+    query: Record<string, any> = {},
+    body: Record<string, any> = {}
   ) => {
     return useIFetch<ListPage<DataT>>(endpoint, {
       method: "POST",
@@ -12,7 +12,7 @@ export const useRestAPI = <DataT>(endpoint: string) => {
       body,
     });
   };
-  const all = (query: Record<string, any>) => {
+  const all = (query: Record<string, any> = {}) => {
     return useIFetch<DataT[]>(endpoint, {
       query: {
         ...query,

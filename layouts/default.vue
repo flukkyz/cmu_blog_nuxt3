@@ -7,7 +7,7 @@ const breadcrumbItems = breadcrumbs();
     <layouts-topbar />
     <layouts-sidebar />
   </ClientOnly>
-  <div class="container mx-auto">
+  <UContainer>
     <ClientOnly>
       <UBreadcrumb
         v-if="breadcrumbItems.hasItem()"
@@ -19,5 +19,5 @@ const breadcrumbItems = breadcrumbs();
     <div class="py-10 px-3">
       <slot />
     </div>
-  </div>
+  </UContainer>
 </template>

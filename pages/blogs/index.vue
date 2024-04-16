@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { AlertDialog } from "#components";
-
 const { t } = useI18n();
 const localePath = useLocalePath();
-const toast = useIToast();
 const modelName = " Blog ";
 
 definePageMeta({
@@ -30,7 +27,7 @@ breadcrumbs().setItems([
 ]);
 
 const queryString = ref({
-  size: 10,
+  size: 12,
   page: 1,
   q: "",
 });
@@ -50,54 +47,81 @@ const checkLastPage = () => {
   }
 };
 watch(data, checkLastPage);
-
-// const alertDelete = ref<InstanceType<typeof AlertDialog> | null>(null);
-// const deleteItem = (data: Crud) => {
-//   alertDelete.value?.show(data.name, data.id);
-// };
-// const onDelete = async (id: number) => {
-//   const { error } = await destroy(id);
-//   if (error.value) {
-//     toast.onError(error.value.statusCode!, error.value.statusMessage!);
-//   } else {
-//     toast.onDelete(t("DELETED"), t("DELETED_", { text: modelName }));
-//   }
-//   refresh();
-// };
 </script>
 
 <template>
   <div class="flex flex-col gap-y-3">
-    <h2 class="font-bold text-xl text-gray-900 dark:text-white">
-      {{ modelName }}
-    </h2>
-    <div v-if="pending" class="">loading...</div>
-    <div
-      v-else-if="data"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2"
-    >
-      <UCard
-        v-for="item in data?.rows"
-        :key="item.id"
-        :ui="{
-          base: 'overflow-hidden',
-          header: { padding: 'p-0 sm:p-0 ' },
-          body: { padding: 'p-0 sm:p-0 ' },
-          divide: '',
-        }"
+    <div class="flex flex-wrap max-md:items-baseline items-center gap-3">
+      <h2
+        class="font-bold text-xl text-gray-900 dark:text-white leading-tight shrink-0"
       >
-        <template #header>
-          <NuxtImg
-            src="https://picsum.photos/1000/500"
-            format="webp"
-            fit="outside"
-          />
-        </template>
-        <p class="text-lg">{{ item.title }}</p>
-        <p class="text-gray-500">
-          {{ item.Member.firstname }} {{ item.Member.lastname }}
-        </p>
-      </UCard>
+        {{ modelName }}
+      </h2>
+      <div class="grow flex max-md:flex-col items-end justify-between gap-3">
+        <UInput
+          v-model="queryString.q"
+          icon="i-fa6-solid-magnifying-glass"
+          class="max-md:order-last"
+          :placeholder="`${$t('SEARCH')}...`"
+        />
+
+        <UButton
+          icon="i-fa6-solid-plus"
+          :label="$t('ADD_', { text: $t('NEW_', { text: modelName }) })"
+          :to="localePath({ name: 'blogs-create' })"
+        />
+      </div>
+    </div>
+    <div v-if="pending" class="">loading...</div>
+    <div v-else-if="data" class="flex flex-col gap-y-5">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-3"
+      >
+        <NuxtLink
+          v-for="item in data?.rows"
+          :key="item.id"
+          :to="localePath({ name: 'blogs-slug', params: { slug: item.slug } })"
+        >
+          <UCard
+            :ui="{
+              base: 'w-full overflow-hidden',
+              header: { padding: 'p-0 sm:p-0' },
+              body: { padding: 'p-3 sm:p-3' },
+              divide: '',
+            }"
+          >
+            <template #header>
+              <NuxtImg src="https://picsum.photos/400" sizes="100vw" />
+            </template>
+            <div class="flex flex-col gap-y-2">
+              <div class="h-14 overflow-hidden">
+                <p class="text-lg font-semibold">{{ item.title }}</p>
+              </div>
+              <p class="text-gray-500 text-xs font-semibold">
+                {{ item.Member?.firstname }} {{ item.Member?.lastname }}
+              </p>
+              <p class="text-gray-500 text-xs">
+                {{ datetime.toText(item.createdAt!) }}
+              </p>
+            </div>
+          </UCard>
+        </NuxtLink>
+      </div>
+      <div
+        class="flex flex-wrap justify-between items-center gap-3 text-sm font-medium"
+      >
+        <ListDataSummary
+          :total-item="data.totalItems"
+          :total-page="data.totalPages"
+          :current-page="queryString.page"
+          :page-size="queryString.size"
+        />
+        <UPagination
+          v-model="queryString.page"
+          :page-count="queryString.size"
+          :total="data.totalItems"
+        />
+      </div>
     </div>
   </div>
 </template>

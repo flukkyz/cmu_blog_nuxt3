@@ -4,7 +4,6 @@ import type { Crud } from "~/components/forms/Crud.vue";
 
 const { t } = useI18n();
 const localePath = useLocalePath();
-const toast = useIToast();
 const modelName = " CRUD ";
 
 definePageMeta({
@@ -79,6 +78,7 @@ const updateItem = (data: Crud) => {
   crudForm.value?.show(data);
 };
 
+const toast = useIToast();
 const onSave = async (data: Crud, mode: Mode) => {
   const { error } =
     mode === "add" ? await create(data) : await update(data.id!, data);

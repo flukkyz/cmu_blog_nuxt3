@@ -38,9 +38,7 @@ const languages = computed(() => [
 
 <template>
   <div class="sticky top-0 max-md:py-3 md:py-1 shadow bg-white z-10">
-    <div
-      class="container mx-auto max-md:px-3 flex items-center justify-between w-"
-    >
+    <UContainer class="flex items-center justify-between">
       <UButton
         class="md:hidden"
         color="primary"
@@ -135,6 +133,6 @@ const languages = computed(() => [
           </UChip>
         </UDropdown>
       </div>
-    </div>
+    </UContainer>
   </div>
 </template>
