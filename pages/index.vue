@@ -1,7 +1,14 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const localePath = useLocalePath();
+const auth = authen();
 const modelName = " Latest Blogs ";
+
+const search = ref<string>("");
+
+const onSearch = () => {
+  useRouter().push(localePath({ name: "blogs", query: { q: search.value } }));
+};
 
 useHead({
   title: modelName,
@@ -15,11 +22,31 @@ const { data, pending, refresh } = await pagination({ size: 12 });
 
 <template>
   <div class="flex flex-col gap-y-3">
-    <h2
-      class="font-bold text-xl text-gray-900 dark:text-white leading-tight shrink-0"
-    >
-      {{ modelName }}
-    </h2>
+    <div class="flex flex-wrap max-md:items-baseline items-center gap-3">
+      <h2
+        class="font-bold text-xl text-gray-900 dark:text-white leading-tight shrink-0"
+      >
+        {{ modelName }}
+      </h2>
+      <div class="grow flex max-md:flex-col items-end justify-between gap-3">
+        <UForm class="space-y-4" @submit="onSearch">
+          <UInput
+            v-model="search"
+            trailing-icon="i-fa6-solid-magnifying-glass"
+            class="max-md:order-last"
+            autofocus
+            :placeholder="`${$t('SEARCH')}...`"
+          />
+        </UForm>
+
+        <UButton
+          v-if="auth.loggedIn"
+          icon="i-fa6-solid-plus"
+          :label="$t('ADD_', { text: $t('NEW_', { text: ' Blog ' }) })"
+          :to="localePath({ name: 'blogs-create' })"
+        />
+      </div>
+    </div>
     <div v-if="pending" class="">loading...</div>
     <div v-else-if="data" class="flex flex-col gap-y-5">
       <div

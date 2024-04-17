@@ -1,9 +1,9 @@
 <template>
   <UForm :schema="schema" :state="state" @submit="onSave">
-    <div class="flex flex-col gap-y-3">
+    <div class="flex flex-col gap-y-5">
       <p class="font-bold">Blog</p>
 
-      <UFormGroup label="Title" name="name">
+      <UFormGroup label="Title" name="title">
         <UInput v-model="state.title" autofocus />
       </UFormGroup>
 
@@ -11,7 +11,7 @@
         <UTextarea v-model="state.content" />
       </UFormGroup>
 
-      <UFormGroup label="Conntent" name="content">
+      <UFormGroup label="Tags" name="tags">
         <USelectMenu
           v-model="tags"
           v-model:query="searchTag"
@@ -27,25 +27,36 @@
           :placeholder="`${$t('SEARCH')} Tags`"
         >
           <template #label>
-            <span v-if="tags.length" class="truncate">{{
-              tags.map((ele) => ele.label).join(", ")
-            }}</span>
+            <div v-if="tags.length" class="flex flex-wrap gap-1">
+              <UBadge
+                v-for="(val, index) in tags"
+                :key="`tags-${index}`"
+                :label="val.label"
+                color="info"
+              />
+            </div>
           </template>
         </USelectMenu>
       </UFormGroup>
 
-      <UFormGroup label="Thumbnail" name="blog_img">
+      <UFormGroup :label="$t('IMAGE')" name="blog_img">
         <FileInput
           v-model="state.blog_img"
           image-only
           :oldFiles="state.Img"
-          @remove-old-file="state.Img = undefined"
+          @remove-old-file="removeOldImage()"
         />
       </UFormGroup>
 
-      <UButton type="submit" size="xl"> Submit </UButton>
+      <UButton
+        type="submit"
+        size="xl"
+        :label="$t('SAVE')"
+        class="justify-center"
+      />
     </div>
   </UForm>
+  <AlertDialog ref="alertDelete" type="delete" @confirm="onRemoveOldImage()" />
 </template>
 
 <script setup lang="ts">
@@ -60,15 +71,31 @@ export interface Blog {
   blog_img?: File;
   Img?: Img;
 }
-import { object, string } from "yup";
+import { AlertDialog } from "#components";
+import { object, string, mixed } from "yup";
+
+const { t } = useI18n();
 
 const mode = ref<Mode>("add");
 const saving = ref<boolean>(false);
 
 const schema = object({
-  title: string().required("Required"),
-  content: string(),
-  tags: string(),
+  title: string()
+    .trim()
+    .required(t("IS_REQUIRED", { text: " Title " })),
+  content: string().trim(),
+  tags: string().trim(),
+  blog_img: mixed()
+    .test(
+      "is-valid-type",
+      t("IMG_ONLY"),
+      (value: any) => !value || (!!value && filename.isImage(value.name))
+    )
+    .test(
+      "is-valid-size",
+      t("LESS_SIZE", { text: t("FILE"), count: "1 MB" }),
+      (value: any) => !value || (!!value && value.size <= 1000000)
+    ),
 });
 
 const emits = defineEmits<{
@@ -87,6 +114,22 @@ watch(tags, () => {
   searchTag.value = "";
   state.value.tags = tags.value.map((ele) => ele.label).join(",");
 });
+
+const toast = useIToast();
+const { removeImage } = useBlog();
+const alertDelete = ref<InstanceType<typeof AlertDialog> | null>(null);
+const removeOldImage = () => {
+  alertDelete.value?.show(t("IMAGE"));
+};
+const onRemoveOldImage = async () => {
+  const { error } = await removeImage(state.value.id!);
+  if (error.value) {
+    toast.onError(error.value.statusCode!, error.value.statusMessage!);
+  } else {
+    toast.onDelete(t("DELETED"), t("DELETED_", { text: t("IMAGE") }));
+    state.value.Img = undefined;
+  }
+};
 
 const onSave = async () => {
   saving.value = true;

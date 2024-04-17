@@ -66,6 +66,7 @@ watch(data, checkLastPage);
           v-model="queryString.q"
           icon="i-fa6-solid-magnifying-glass"
           class="max-md:order-last"
+          autofocus
           :placeholder="`${$t('SEARCH')}...`"
         />
 

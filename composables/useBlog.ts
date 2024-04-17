@@ -52,6 +52,8 @@ export default () => {
     },
     create: async (body: FormData) => await api.create(body),
     update: async (id: number, body: FormData) => await api.update(id, body),
+    removeImage: async (id: number) =>
+      await useIFetch(`${endpoint}/${id}/remove-image`, { method: "PUT" }),
     destroy: async (id: number) => await api.destroy(id),
   };
 };

@@ -25,6 +25,6 @@ export default async (query: Record<string, any>) => {
     update: async (id: number, body: Crud) => await api.update(id, body),
     destroy: async (id: number) => await api.destroy(id),
     deletes: async (ids: number[]) =>
-      useIFetch(`${endpoint}/delete`, { method: "POST", body: { ids } }),
+      await useIFetch(`${endpoint}/delete`, { method: "POST", body: { ids } }),
   };
 };

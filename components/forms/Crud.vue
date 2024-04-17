@@ -25,7 +25,12 @@
         </UFormGroup>
 
         <template #footer>
-          <UButton type="submit"> Submit </UButton>
+          <UButton
+            type="submit"
+            size="xl"
+            :label="$t('SAVE')"
+            class="justify-center"
+          />
         </template>
       </UCard>
     </UForm>
@@ -39,12 +44,16 @@ export interface Crud {
 }
 import { object, string } from "yup";
 
+const { t } = useI18n();
+
 const isOpen = ref<boolean>(false);
 const mode = ref<Mode>("add");
 const saving = ref<boolean>(false);
 
 const schema = object({
-  name: string().required("Required"),
+  name: string()
+    .trim()
+    .required(t("IS_REQUIRED", { text: " Title " })),
 });
 
 const emits = defineEmits<{
