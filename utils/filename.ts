@@ -1,6 +1,6 @@
 export default {
   isImage: (filename: string) =>
-    /\.(jpg|jpeg|png|gif|bmp|svg)$/i.test(filename.toLowerCase()),
+    /\.(jpg|jpeg|png|gif|bmp|svg|webp|avif)$/i.test(filename.toLowerCase()),
   isVideo: (filename: string) =>
     /\.(mp4|avi|mov|wmv|flv|mkv|mpeg|vob|wav)$/i.test(filename.toLowerCase()),
   isAudio: (filename: string) =>

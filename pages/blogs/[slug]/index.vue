@@ -101,10 +101,12 @@ const onDelete = async (id: number) => {
         </UTooltip>
       </div>
     </div>
+
     <NuxtImg
+      v-if="data.Img"
+      :src="data.Img?.url"
+      sizes="100vw"
       provider="api"
-      src="/uploads/blogs/F30B2BE226A378005163969C77DFDD9BE31382A3.jpg"
-      class="mx-auto"
     />
     <div class="" v-html="data.content" />
   </div>

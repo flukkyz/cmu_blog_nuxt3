@@ -34,17 +34,31 @@
         </USelectMenu>
       </UFormGroup>
 
+      <UFormGroup label="Thumbnail" name="blog_img">
+        <FileInput
+          v-model="state.blog_img"
+          image-only
+          :oldFiles="state.Img"
+          @remove-old-file="state.Img = undefined"
+        />
+      </UFormGroup>
+
       <UButton type="submit" size="xl"> Submit </UButton>
     </div>
   </UForm>
 </template>
 
 <script setup lang="ts">
+interface Img {
+  url: string;
+}
 export interface Blog {
   id?: number;
   title: string;
   content: string;
   tags: string;
+  blog_img?: File;
+  Img?: Img;
 }
 import { object, string } from "yup";
 
@@ -83,6 +97,11 @@ const bind = (data?: Blog) => {
   if (data) {
     mode.value = "edit";
     state.value = { ...state.value, ...data };
+    if (state.value.Img) {
+      state.value.Img.url = `${useRuntimeConfig().public.apiBase}${
+        state.value.Img.url
+      }`;
+    }
     tags.value = state.value.tags
       ? state.value.tags.split(",").map((ele) => {
           return { label: ele };

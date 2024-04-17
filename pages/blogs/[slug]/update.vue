@@ -52,7 +52,13 @@ onMounted(() => {
 });
 
 const save = async (data: Blog) => {
-  const { error } = await useBlog().update(data.id!, data);
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(data)) {
+    if (value) {
+      formData.append(key, value);
+    }
+  }
+  const { error } = await useBlog().update(data.id!, formData);
   if (error.value) {
     toast.onError(error.value.statusCode!, error.value.statusMessage!);
   } else {

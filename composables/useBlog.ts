@@ -50,8 +50,8 @@ export default () => {
       }
       return { data, pending };
     },
-    create: async (body: Blog) => await api.create(body),
-    update: async (id: number, body: Blog) => await api.update(id, body),
+    create: async (body: FormData) => await api.create(body),
+    update: async (id: number, body: FormData) => await api.update(id, body),
     destroy: async (id: number) => await api.destroy(id),
   };
 };

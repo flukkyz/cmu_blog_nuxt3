@@ -95,7 +95,11 @@ watch(data, checkLastPage);
             }"
           >
             <template #header>
-              <NuxtImg src="https://picsum.photos/400" sizes="100vw" />
+              <NuxtImg
+                :src="item.Img ? item.Img.url : 'https://picsum.photos/400'"
+                sizes="100vw"
+                :provider="item.Img ? 'api' : ''"
+              />
             </template>
             <div class="flex flex-col gap-y-2">
               <div class="h-14 overflow-hidden">
