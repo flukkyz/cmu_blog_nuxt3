@@ -31,8 +31,12 @@ const queryString = ref({
   page: 1,
   q: "",
 });
+queryString.value = {
+  ...queryString.value,
+  ...useRoute().query,
+};
 
-const { pagination, destroy } = useBlog();
+const { pagination } = useBlog();
 
 const { data, pending, refresh } = await pagination(queryString);
 

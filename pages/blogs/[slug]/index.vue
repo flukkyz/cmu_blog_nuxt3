@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AlertDialog } from "#components";
+import { AlertDialog, NuxtLink } from "#components";
 
 const { t } = useI18n();
 const localePath = useLocalePath();
@@ -59,10 +59,22 @@ const onDelete = async (id: number) => {
 <template>
   <div v-if="pending" class="">loading...</div>
   <div v-else-if="data" class="flex flex-col gap-y-3">
-    <div class="flex items-center justify-between gap-x-2">
-      <h2 class="font-bold text-xl text-gray-900 dark:text-white">
-        {{ data.title }}
-      </h2>
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <h2 class="font-bold text-xl text-gray-900 dark:text-white">
+          {{ data.title }}
+        </h2>
+        <div v-if="data.tags" class="flex flex-wrap items-center gap-1">
+          <UIcon name="i-fa6-solid-tags" class="text-info-600 text-xl" />
+          <NuxtLink
+            v-for="(val, index) in data.tags.split(',')"
+            :key="`tags-${index}`"
+            :to="localePath({ name: 'blogs', query: { q: val } })"
+          >
+            <UBadge :label="val" color="info" />
+          </NuxtLink>
+        </div>
+      </div>
       <div class="flex flex-1 justify-end gap-x-2">
         <UTooltip :text="$t('EDIT')">
           <UButton

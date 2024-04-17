@@ -122,6 +122,7 @@
     </div>
     <TiptapEditorContent :editor="editor" />
   </div>
+  <div class="" v-html="editor.getHTML()"></div>
 </template>
 
 <script setup lang="ts">

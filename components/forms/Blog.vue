@@ -11,6 +11,29 @@
         <UTextarea v-model="state.content" />
       </UFormGroup>
 
+      <UFormGroup label="Conntent" name="content">
+        <USelectMenu
+          v-model="tags"
+          v-model:query="searchTag"
+          :options="tags"
+          multiple
+          searchable
+          creatable
+          clear-search-on-close
+          :searchable-placeholder="`${$t('SEARCH')} ${$t('OR')} ${$t('ADD_', {
+            text: ' Tags ',
+          })}`"
+          show-create-option-when="always"
+          :placeholder="`${$t('SEARCH')} Tags`"
+        >
+          <template #label>
+            <span v-if="tags.length" class="truncate">{{
+              tags.map((ele) => ele.label).join(", ")
+            }}</span>
+          </template>
+        </USelectMenu>
+      </UFormGroup>
+
       <UButton type="submit" size="xl"> Submit </UButton>
     </div>
   </UForm>
@@ -21,6 +44,7 @@ export interface Blog {
   id?: number;
   title: string;
   content: string;
+  tags: string;
 }
 import { object, string } from "yup";
 
@@ -30,6 +54,7 @@ const saving = ref<boolean>(false);
 const schema = object({
   title: string().required("Required"),
   content: string(),
+  tags: string(),
 });
 
 const emits = defineEmits<{
@@ -39,6 +64,14 @@ const emits = defineEmits<{
 const state = ref<Blog>({
   title: "",
   content: "",
+  tags: "",
+});
+
+const tags = ref<DefaultSelectOptions[]>([]);
+const searchTag = ref<string>("");
+watch(tags, () => {
+  searchTag.value = "";
+  state.value.tags = tags.value.map((ele) => ele.label).join(",");
 });
 
 const onSave = async () => {
@@ -50,6 +83,11 @@ const bind = (data?: Blog) => {
   if (data) {
     mode.value = "edit";
     state.value = { ...state.value, ...data };
+    tags.value = state.value.tags
+      ? state.value.tags.split(",").map((ele) => {
+          return { label: ele };
+        })
+      : [];
   }
 };
 

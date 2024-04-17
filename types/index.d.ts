@@ -45,7 +45,7 @@ declare global {
 
   interface DefaultSelectOptions {
     label: string | number;
-    value: string | number;
+    value?: string | number;
   }
 
   interface NavigationLinkItem {

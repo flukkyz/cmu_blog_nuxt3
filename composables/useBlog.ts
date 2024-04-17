@@ -11,7 +11,7 @@ export default () => {
     title: string;
     slug?: string;
     content: string;
-    tags?: string;
+    tags: string;
     hit?: number;
     Img?: Img;
     Member?: Member;
