@@ -1,75 +1,37 @@
-# Nuxt 3 Minimal Starter
+# cmu_blog_nuxt3
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+CMU Blog Frontend only on Nuxt 3 (Typescript)
 
-## Setup
-
-Make sure to install the dependencies:
+## Setup Environment
 
 ```bash
-# npm
-npm install
+# Copy Example ENV
+$ cp .env.example .env
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+# Update ENV & Save
+$ nano .env
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Build Setup
 
 ```bash
-# npm
-npm run dev
+# Install dependencies
+$ yarn install
 
-# pnpm
-pnpm run dev
+# Serve with hot reload at localhost:3000
+$ yarn dev
 
-# yarn
-yarn dev
+# Build for production and launch server
+$ yarn build
+$ yarn start
 
-# bun
-bun run dev
+# Generate static project
+$ yarn generate
 ```
 
-## Production
-
-Build the application for production:
+## Docker Compose
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+# Build docker
+$ docker-compose up -d --build
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
