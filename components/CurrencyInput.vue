@@ -32,7 +32,6 @@ const props = withDefaults(
     autofocus?: boolean;
     autofocusDelay?: number;
     loading?: boolean;
-    readonly?: boolean;
     required?: boolean;
   }>(),
   {
@@ -43,7 +42,6 @@ const props = withDefaults(
     autofocus: false,
     autofocusDelay: 100,
     loading: false,
-    readonly: false,
     required: false,
     integer: false,
     errors: () => {

@@ -204,6 +204,8 @@
   "PHONE_NUMBER": "Phone",
   "PROFILE": "Profile",
   "ZIPCODE": "Zipcode",
+  "TODAY": "Today",
+  "NOW": "Now",
   "PLEASE_CONTACT_STAFF": "Please, contact staff.",
   "ERROR_TEXT_400": "Invalid request.",
   "ERROR_TEXT_401": "Unauthorized.",
