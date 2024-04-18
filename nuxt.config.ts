@@ -154,7 +154,7 @@ export default defineNuxtConfig({
         name: "api", // optional value to overrider provider name
         provider: "~/providers/my-provider.ts", // Path to custom provider
         options: {
-          baseURL: "http://localhost:5000",
+          baseURL: process.env.NUXT_PUBLIC_API_BASE,
         },
       },
     },
