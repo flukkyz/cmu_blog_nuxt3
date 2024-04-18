@@ -39,6 +39,7 @@
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/i18n": "^8.3.0",
+    "@vite-pwa/nuxt": "^0.6.0",
     "dayjs-nuxt": "^2.1.9",
     "eslint": "^8.57.0",
     "nuxt-lodash": "^2.5.3",

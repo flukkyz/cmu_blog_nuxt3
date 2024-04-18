@@ -4,10 +4,14 @@ const localePath = useLocalePath();
 const auth = authen();
 const modelName = " Latest Blogs ";
 
-const search = ref<string>("");
+const state = ref({
+  search: "",
+});
 
 const onSearch = () => {
-  useRouter().push(localePath({ name: "blogs", query: { q: search.value } }));
+  useRouter().push(
+    localePath({ name: "blogs", query: { q: state.value.search } })
+  );
 };
 
 useHead({
@@ -15,9 +19,11 @@ useHead({
 });
 breadcrumbs().clear();
 
+const queryString = ref({
+  size: 12,
+});
 const { pagination } = useBlog();
-
-const { data, pending, refresh } = await pagination({ size: 12 });
+const { data, pending } = await pagination(queryString);
 </script>
 
 <template>
@@ -29,9 +35,9 @@ const { data, pending, refresh } = await pagination({ size: 12 });
         {{ modelName }}
       </h2>
       <div class="grow flex max-md:flex-col items-end justify-between gap-3">
-        <UForm class="space-y-4" @submit="onSearch">
+        <UForm class="space-y-4" :state="state" @submit="onSearch">
           <UInput
-            v-model="search"
+            v-model="state.search"
             trailing-icon="i-fa6-solid-magnifying-glass"
             class="max-md:order-last"
             autofocus

@@ -143,6 +143,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "nuxt-tiptap-editor",
     "@nuxtjs/robots",
+    "@vite-pwa/nuxt",
   ],
   css: ["~/assets/main.css"],
   ui: {
@@ -199,6 +200,83 @@ export default defineNuxtConfig({
   },
   tiptap: {
     prefix: "Tiptap", //prefix for Tiptap imports, composables not included
+  },
+  pwa: {
+    strategies: "injectManifest",
+    srcDir: "service-worker",
+    filename: "sw.ts",
+    registerType: "autoUpdate",
+    manifest: {
+      name: "Nuxt Vite PWA",
+      short_name: "NuxtVitePWA",
+      theme_color: "#ffffff",
+      icons: [
+        {
+          type: "image/png",
+          sizes: "36x36",
+          src: "/icons/android-icon-36x36.png",
+        },
+        {
+          type: "image/png",
+          sizes: "48x48",
+          src: "/icons/android-icon-48x48.png",
+        },
+        {
+          type: "image/png",
+          sizes: "192x192",
+          src: "/icons/android-icon-192x192.png",
+        },
+        {
+          type: "image/png",
+          sizes: "70x70",
+          src: "/icons/ms-icon-70x70.png",
+        },
+        {
+          type: "image/png",
+          sizes: "150x150",
+          src: "/icons/ms-icon-150x150.png",
+        },
+        {
+          type: "image/png",
+          sizes: "310x310",
+          src: "/icons/ms-icon-310x310.png",
+        },
+        {
+          type: "image/png",
+          sizes: "32x32",
+          src: "/icons/favicon-32x32.png",
+        },
+        {
+          type: "image/png",
+          sizes: "96x96",
+          src: "/icons/favicon-96x96.png",
+        },
+        {
+          type: "image/png",
+          sizes: "16x16",
+          src: "/icons/favicon-16x16.png",
+        },
+      ],
+    },
+    workbox: {
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+    },
+    injectManifest: {
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+    },
+    client: {
+      installPrompt: true,
+      // you don't need to include this: only for testing purposes
+      // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
+      periodicSyncForUpdates: 20,
+    },
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+      navigateFallback: "/",
+      navigateFallbackAllowlist: [/^\/$/],
+      type: "module",
+    },
   },
   robots: [
     {
