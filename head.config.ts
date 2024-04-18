@@ -6,7 +6,9 @@ export default {
     translate: "no",
   },
   titleTemplate: (titleChunk: string) => {
-    return titleChunk ? `${titleChunk} - Site Title` : "Site Title";
+    return titleChunk
+      ? `${titleChunk} - ${process.env.NUXT_PUBLIC_APP_NAME}`
+      : process.env.NUXT_PUBLIC_APP_NAME;
   },
   meta: [
     { charset: "utf-8" },
