@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "cmu-blog-nuxt3-app",
   "private": true,
   "type": "module",
   "engines": {
