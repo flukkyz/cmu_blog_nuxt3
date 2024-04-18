@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: process.env.NUXT_ENV === "development" },
+  devtools: { enabled: process.env.NUXT_NODE_ENV === "development" },
   app: {
     head: {
       htmlAttrs: {
