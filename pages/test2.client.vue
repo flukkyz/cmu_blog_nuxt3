@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const { t } = useI18n();
+
+const text = t("ABOUT");
 const date = ref<Date>(new Date());
 </script>
 
@@ -7,5 +10,9 @@ const date = ref<Date>(new Date());
   <br />
   <br />
   <br />
-  {{ date }}
+  {{ $t("ATTACH_FILE_", { text: $t("COUNTRY") }) }}
+  <br />
+  {{ text }}
+  <br />
+  {{ currencyText(134534534) }}
 </template>

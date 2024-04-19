@@ -46,14 +46,6 @@ const columns = [
 ];
 
 const selected = ref<Crud[]>([]);
-const onSelect = (row: Crud) => {
-  const index = useFindIndex(selected.value, { id: row.id });
-  if (index === -1) {
-    selected.value.push(row);
-  } else {
-    selected.value.splice(index, 1);
-  }
-};
 
 const { data, pending, refresh, create, update, destroy, deletes } =
   await useCrud(queryString);
@@ -113,7 +105,7 @@ const alertDeleteSelected = ref<InstanceType<typeof AlertDialog> | null>(null);
 const deleteSelected = () => {
   alertDeleteSelected.value?.show(
     t("_SELECTED", {
-      text: `${currencyText(selected.value.length)} ${modelName}`,
+      text: `${selected.value.length} ${modelName}`,
     })
   );
 };
@@ -175,9 +167,8 @@ const onDeleteSelected = async () => {
       by="id"
       :columns="columns"
       :loading="pending"
-      @select="onSelect"
     >
-      <template #actions-header="{ column }">
+      <template #actions-header>
         <div v-if="selected.length > 0" class="flex flex-1 justify-end gap-x-2">
           <UButton
             icon="i-fa6-solid-trash-can"
