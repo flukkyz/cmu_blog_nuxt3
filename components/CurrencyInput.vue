@@ -8,45 +8,14 @@ import {
 
 const props = withDefaults(
   defineProps<{
-    name?: string;
-    id?: string;
     modelValue?: number | null;
     min?: string | number;
     max?: string | number;
     precision?: string | number;
     integer?: boolean;
-    placeholder?: string;
-    variant?: "outline" | "none";
-    size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
-    inputClass?: string;
-    color?: string;
-    ui?: Object;
-    icon?: string;
-    trailingIcon?: string;
-    leadingIcon?: string;
-    loadingIcon?: string;
-    disabled?: boolean;
-    trailing?: boolean;
-    padded?: boolean;
-    leading?: boolean;
-    autofocus?: boolean;
-    autofocusDelay?: number;
-    loading?: boolean;
-    required?: boolean;
   }>(),
   {
-    disabled: false,
-    trailing: false,
-    padded: true,
-    leading: false,
-    autofocus: false,
-    autofocusDelay: 100,
-    loading: false,
-    required: false,
     integer: false,
-    errors: () => {
-      return [];
-    },
   }
 );
 
@@ -124,26 +93,7 @@ const selectAll = (event: Event) => {
 <template>
   <UInput
     ref="inputRef"
-    :name="name"
-    :id="id"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    :loading="loading"
-    :variant="variant"
-    :inputClass="inputClass"
-    :color="color"
-    :ui="ui"
-    :size="size"
-    :icon="icon"
-    :trailingIcon="trailingIcon"
-    :leadingIcon="leadingIcon"
-    :loadingIcon="loadingIcon"
-    :trailing="trailing"
-    :autofocus="autofocus"
-    :autofocusDelay="autofocusDelay"
-    :padded="padded"
-    :leading="leading"
-    :required="required"
+    v-bind="{ ...$attrs }"
     @input="input"
     @change="change"
     @blur="blur"

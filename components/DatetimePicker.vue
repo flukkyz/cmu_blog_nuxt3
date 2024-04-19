@@ -87,7 +87,7 @@ const onClearable = (): void => {
 
 <template>
   <div
-    class="flex items-center mt-1 rounded-md border bg-white border-gray-300 shadow-sm focus-within:ring-1 focus-within:border-primary-600 focus-within:ring-primary-600"
+    class="flex items-center rounded-md border bg-white border-gray-300 shadow-sm focus-within:ring-1 focus-within:border-primary-600 focus-within:ring-primary-600"
     :class="[
       disabled
         ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-500'
@@ -152,7 +152,7 @@ const onClearable = (): void => {
       </template>
       <template #dp-input="{ value }">
         <div
-          class="block w-full border-0 p-0 bg-transparent my-2 placeholder-gray-400 focus:ring-0 sm:text-sm mx-2 focus:outline-none"
+          class="block w-full border-0 p-0 bg-transparent pt-2 pb-1.5 placeholder-gray-400 focus:ring-0 sm:text-sm mx-2 focus:outline-none"
           :class="[
             disabled
               ? 'disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-500'
@@ -187,7 +187,9 @@ const onClearable = (): void => {
               }}
             </span>
           </span>
-          <span class="text-gray-600" v-else>{{ placeholder }}&nbsp;</span>
+          <span class="text-gray-400 text-sm" v-else
+            >{{ placeholder }}&nbsp;</span
+          >
         </div>
       </template>
     </Datepicker>
@@ -216,3 +218,9 @@ const onClearable = (): void => {
     </slot>
   </div>
 </template>
+
+<style>
+:root {
+  --dp-font-family: "Noto Sans Thai", sans-serif !important;
+}
+</style>

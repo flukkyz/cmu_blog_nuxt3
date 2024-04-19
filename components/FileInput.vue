@@ -99,7 +99,7 @@ const createObjectURL = (file: File) => {
 <template>
   <div
     :class="[
-      'overflow-hidden mt-1 rounded-md border bg-white border-gray-300 shadow-sm focus-within:ring-1',
+      'overflow-hidden rounded-md border bg-white border-gray-300 shadow-sm focus-within:ring-1',
       disabled
         ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
         : dragOver
