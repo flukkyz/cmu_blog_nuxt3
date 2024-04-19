@@ -79,12 +79,10 @@ export default defineNuxtConfig({
     prefix: "Tiptap", //prefix for Tiptap imports, composables not included
   },
   pwa: {
-    mode: nodeEnv,
-    strategies: "generateSW",
-    registerType: "autoUpdate",
     manifest: {
       name: process.env.NUXT_PUBLIC_APP_NAME,
       short_name: process.env.NUXT_PUBLIC_APP_NAME,
+      description: "",
       theme_color: "#ffffff",
       icons: [
         {
@@ -135,16 +133,13 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+      navigateFallback: "/",
     },
     client: {
       installPrompt: true,
     },
     devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallback: "/",
-      navigateFallbackAllowlist: [/^\/$/],
+      enabled: false,
       type: "module",
     },
   },

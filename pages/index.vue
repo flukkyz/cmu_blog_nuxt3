@@ -66,13 +66,23 @@ const { data, pending } = await pagination(queryString);
           <UCard
             :ui="{
               base: 'w-full overflow-hidden',
-              header: { padding: 'p-0 sm:p-0' },
+              header: {
+                base: `h-48 flex items-center justify-center ${
+                  item.Img ? 'overflow-hidden' : ''
+                }`,
+                padding: 'p-0 sm:p-0',
+              },
               body: { padding: 'p-3 sm:p-3' },
               divide: '',
             }"
           >
             <template #header>
-              <NuxtImg src="https://picsum.photos/400" sizes="100vw" />
+              <img
+                v-if="item.Img"
+                :src="`${useRuntimeConfig().public.apiBase}${item.Img.url}`"
+                height="128"
+              />
+              <img v-else src="/images/logo.png" height="128" />
             </template>
             <div class="flex flex-col gap-y-2">
               <div class="h-14 overflow-hidden">
@@ -82,7 +92,7 @@ const { data, pending } = await pagination(queryString);
                 {{ item.Member?.firstname }} {{ item.Member?.lastname }}
               </p>
               <p class="text-gray-500 text-xs">
-                {{ datetime.toText(item.createdAt!) }}
+                {{ datetime.fromNow(item.createdAt!) }}
               </p>
             </div>
           </UCard>
