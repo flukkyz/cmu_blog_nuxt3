@@ -62,6 +62,8 @@ watch(
   }
 );
 
+const slots = useSlots();
+
 const emits = defineEmits<{
   (e: "update:modelValue", value: number | null): void;
   (e: "input", value: number | null): void;
@@ -98,5 +100,12 @@ const selectAll = (event: Event) => {
     @change="change"
     @blur="blur"
     @click="selectAll"
-  />
+  >
+    <template v-if="slots.leading" #leading>
+      <slot name="leading"></slot>
+    </template>
+    <template v-if="slots.trailing" #trailing>
+      <slot name="trailing"></slot>
+    </template>
+  </UInput>
 </template>

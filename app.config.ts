@@ -4,6 +4,16 @@ export default defineAppConfig({
     button: {
       variant: { link: "hover:no-underline" },
     },
+    input: {
+      icon: {
+        leading: {
+          pointer: "",
+        },
+        trailing: {
+          pointer: "",
+        },
+      },
+    },
     icons: {
       dynamic: true,
     },

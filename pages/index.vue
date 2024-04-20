@@ -38,11 +38,18 @@ const { data, pending } = await pagination(queryString);
         <UForm class="space-y-4" :state="state" @submit="onSearch">
           <UInput
             v-model="state.search"
-            trailing-icon="i-fa6-solid-magnifying-glass"
             class="max-md:order-last"
             autofocus
             :placeholder="`${$t('SEARCH')}...`"
-          />
+          >
+            <template #trailing>
+              <UIcon
+                name="i-fa6-solid-magnifying-glass"
+                class="cursor-pointer text-xl text-gray-400"
+                @click="onSearch"
+              />
+            </template>
+          </UInput>
         </UForm>
 
         <UButton
