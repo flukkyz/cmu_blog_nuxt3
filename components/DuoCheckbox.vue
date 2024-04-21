@@ -1,7 +1,9 @@
 <template>
-  <div :class="['flex gap-5', { 'flex-row-reverse': swap }]">
-    <UCheckbox v-model="ct" :label="renderTrueLabel" />
-    <UCheckbox v-model="cf" :label="renderFalseLabel" />
+  <div
+    :class="['flex gap-5 min-w-32', { 'flex-row-reverse justify-end': swap }]"
+  >
+    <UCheckbox v-model="ct" :label="renderTrueLabel" class="min-w-20" />
+    <UCheckbox v-model="cf" :label="renderFalseLabel" class="min-w-20" />
   </div>
 </template>
 
