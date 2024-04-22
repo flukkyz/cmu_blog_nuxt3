@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { UInput } from "#components";
 import Datepicker from "@vuepic/vue-datepicker";
 import type { DatePickerInstance } from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -32,6 +33,7 @@ const props = withDefaults(
 );
 
 const datepicker = ref<DatePickerInstance>(null);
+const inputRender = ref<typeof UInput | null>(null);
 
 const openCalendar = () => {
   if (datepicker.value) {
@@ -92,6 +94,7 @@ const input = (val: Date | Date[]) => {
   emits("update:modelValue", returnDateTime);
   emits("change", returnDateTime);
   emits("input", returnDateTime);
+  inputRender.value?.onBlur();
 };
 const blur = (val: Date) => {
   const returnDateTime = setReturnDatetime(val);
@@ -107,6 +110,7 @@ const onClearable = (): void => {
 <template>
   <UInput
     :model-value="renderValue"
+    ref="inputRender"
     v-bind="{ ...$attrs }"
     readonly
     @click="openCalendar"
