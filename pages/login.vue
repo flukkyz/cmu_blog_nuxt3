@@ -79,7 +79,7 @@ const onResendVerify = async () => {
         </template>
 
         <div class="flex flex-col gap-y-5">
-          <UFormGroup label="Email" name="email">
+          <UFormGroup label="Email" name="username">
             <UInput
               v-model="body.username"
               :disabled="status === 'pending'"
