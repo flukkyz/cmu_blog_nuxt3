@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     },
   },
   pinia: {
-    storesDirs: ["./stores/**", "./custom-folder/stores/**"],
+    storesDirs: ["./stores/**"],
   },
   colorMode: {
     preference: "light",
