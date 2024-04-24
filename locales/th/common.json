@@ -173,7 +173,7 @@
   "PROGRAM_CODE": "รหัสหลักสูตร",
   "STUDENT_CODE": "รหัสนักศีกษา",
   "ROLE": "สิทธิ์การใช้งาน",
-  "USER_CONFIRM_PASSWORD": "ยืนยัน Password ",
+  "CONFIRM_PASSWORD": "ยืนยัน Password ",
   "FORGOT_PASSWORD": "ลืมรหัสผ่าน?",
   "CREATE_PASSWORD": "สร้างรหัสผ่าน",
   "CHANGE_PASSWORD": "เปลี่ยนรหัสผ่าน",

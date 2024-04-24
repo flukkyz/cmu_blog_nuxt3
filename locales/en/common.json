@@ -173,7 +173,7 @@
   "PROGRAM_CODE": "Code",
   "STUDENT_CODE": "Student Code",
   "ROLE": "Role",
-  "USER_CONFIRM_PASSWORD": "Confirm Password",
+  "CONFIRM_PASSWORD": "Confirm Password",
   "FORGOT_PASSWORD": "Forgot Password?",
   "CREATE_PASSWORD": "Create Password",
   "CHANGE_PASSWORD": "Change Password",

@@ -66,6 +66,38 @@ export const authen = defineStore("authen", {
         send,
       };
     },
+    async checkResetPasswordToken(token: string) {
+      const { error } = await useIFetch(`${endpoint}/check-password-token`, {
+        method: "POST",
+        body: {
+          token,
+        },
+      });
+      if (error.value) {
+        throw createError({
+          statusCode: error.value.statusCode,
+          statusMessage: error.value.statusMessage,
+          fatal: true,
+        });
+      }
+    },
+    async resetPassword(token: string, body: PasswordConfirmation) {
+      const {
+        error,
+        status,
+        execute: reset,
+      } = await useIFetch(`${endpoint}/reset-password/${token}`, {
+        method: "PUT",
+        body,
+        immediate: false,
+        watch: false,
+      });
+      return {
+        error,
+        status,
+        reset,
+      };
+    },
     async callBack(code: string, state: string) {
       if (!this.loggedIn) {
         const { data, error } = await useIFetch<Authentication>(
