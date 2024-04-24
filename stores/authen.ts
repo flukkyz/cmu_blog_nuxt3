@@ -48,6 +48,24 @@ export const authen = defineStore("authen", {
         login,
       };
     },
+    async forgotPassword(body: Email) {
+      const {
+        error,
+        status,
+        execute: send,
+      } = await useIFetch(`${endpoint}/forgot-password`, {
+        method: "POST",
+        body,
+        immediate: false,
+        watch: false,
+      });
+
+      return {
+        error,
+        status,
+        send,
+      };
+    },
     async callBack(code: string, state: string) {
       if (!this.loggedIn) {
         const { data, error } = await useIFetch<Authentication>(

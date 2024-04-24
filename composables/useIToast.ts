@@ -27,7 +27,7 @@ export const useIToast = () => {
   const onNotifier = (
     id: string,
     title: string | number,
-    description: string
+    description?: string
   ) =>
     toast.add({
       id,
@@ -41,15 +41,15 @@ export const useIToast = () => {
       },
     });
 
-  const onSuccess = (title: string | number, description: string) =>
+  const onSuccess = (title: string | number, description?: string) =>
     onNotifier("success", title, description);
-  const onInfo = (title: string | number, description: string) =>
+  const onInfo = (title: string | number, description?: string) =>
     onNotifier("info", title, description);
-  const onWarning = (title: string | number, description: string) =>
+  const onWarning = (title: string | number, description?: string) =>
     onNotifier("warning", title, description);
-  const onError = (title: string | number, description: string) =>
+  const onError = (title: string | number, description?: string) =>
     onNotifier("error", title, description);
-  const onDelete = (title: string | number, description: string) =>
+  const onDelete = (title: string | number, description?: string) =>
     onNotifier("delete", title, description);
   const onCustom = (options: NotificationOptions) => toast.add(options);
 
