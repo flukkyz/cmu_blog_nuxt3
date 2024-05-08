@@ -64,7 +64,7 @@ export default {
     dateStyle?: DateTimeStyle | null,
     timeStyle?: DateTimeStyle | null
   ) => {
-    const { locale } = useI18n();
+    const { locale } = useNuxtApp().$i18n;
     if (date) {
       return (
         (dateStyle !== null

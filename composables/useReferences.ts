@@ -1,6 +1,7 @@
 export default () => {
-  const { t } = useI18n();
-  const localePath = useLocalePath();
+  const nuxt = useNuxtApp();
+  const { t } = nuxt.$i18n;
+  const localePath = nuxt.$localePath;
   return {
     rowsPerPages: [
       { value: 10, label: 10 },

@@ -20,7 +20,7 @@ export default (data: SEOData) => {
     htmlAttrs: {
       lang:
         data.lang ||
-        useI18n().locale.value ||
+        useNuxtApp().$i18n.locale.value ||
         (config.metaDefaultLang ? config.metaDefaultLang : "en"),
     },
     title: dataTitle,
