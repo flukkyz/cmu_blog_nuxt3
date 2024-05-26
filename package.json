@@ -24,7 +24,7 @@
     "@nuxt/ui": "^2.15.2",
     "@nuxtjs/robots": "^3.0.0",
     "@pinia/nuxt": "^0.5.1",
-    "@vuepic/vue-datepicker": "^8.4.0",
+    "@vuepic/vue-datepicker": "^8.5.1",
     "email-validator": "^2.0.4",
     "maska": "^2.1.11",
     "nuxt": "^3.11.1",
