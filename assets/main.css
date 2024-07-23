@@ -4,6 +4,9 @@ body {
 .pdf {
   font-family: "Sarabun", sans-serif !important;
 }
+:root {
+  --dp-font-family: "Noto Sans Thai", sans-serif !important;
+}
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -23,4 +26,47 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(128, 128, 128, 0.8);
+}
+
+.ck-content {
+  overflow: auto;
+  & .image {
+    margin: 0.2em auto !important;
+  }
+
+  & .image-style-side {
+    float: right;
+    margin-left: var(--ck-image-style-spacing);
+  }
+
+  & .image-style-align-left {
+    float: left;
+    margin-right: var(--ck-image-style-spacing);
+  }
+
+  & .image-style-align-center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  & .image-style-align-right {
+    float: right;
+    margin-left: var(--ck-image-style-spacing);
+  }
+
+  & .text-tiny {
+    font-size: 0.7em;
+  }
+
+  & .text-small {
+    font-size: 0.85em;
+  }
+
+  & .text-big {
+    font-size: 1.4em;
+  }
+
+  & .text-huge {
+    font-size: 1.8em;
+  }
 }

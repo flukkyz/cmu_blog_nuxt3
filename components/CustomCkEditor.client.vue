@@ -1,23 +1,21 @@
 <template>
-  <div class="prose max-w-none">
-    <ckeditor :editor="ClassicEditor" :value="model" :config @input="input" />
-  </div>
+  <ckeditor v-model="model" :editor="ClassicEditor" :config />
 </template>
 
 <script setup lang="ts">
 import ClassicEditor from "~/libs/CustomEditor";
-const model = defineModel<string>();
-const input = (event: string) => {
-  model.value = event;
-};
+const model = defineModel<string>("");
+
+const runtimeConfig = useRuntimeConfig();
+const baseURL = `${runtimeConfig.public.apiBase}${runtimeConfig.public.apiPath}`;
+const accessToken = useCookie("accessToken");
 
 const config = {
   simpleUpload: {
-    uploadUrl: "http://localhost:5000/api/test2", // Change this to your upload URL
-    headers: {
-      "X-CSRF-TOKEN": "CSRF-Token",
-      Authorization: "Bearer <JSON Web Token>",
-    },
+    uploadUrl: `${baseURL}upload-img/`, // Change this to your upload URL
+    headers: accessToken.value
+      ? { Authorization: `Bearer ${accessToken.value}` }
+      : {},
   },
 };
 </script>

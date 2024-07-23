@@ -1,5 +1,5 @@
 <template>
-  <div class="prose max-w-none" v-html="html" />
+  <div class="prose max-w-none ck-content" v-html="html" />
 </template>
 
 <script setup lang="ts">

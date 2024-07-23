@@ -108,7 +108,7 @@ const onDelete = async (id: number) => {
       sizes="100vw"
       provider="api"
     />
-    <div class="" v-html="data.content" />
+    <RenderCkEditor :html="data.content" />
   </div>
   <AlertDialog ref="alertDelete" type="delete" @confirm="onDelete" />
 </template>

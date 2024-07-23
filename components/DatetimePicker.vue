@@ -109,8 +109,8 @@ const onClearable = (): void => {
 
 <template>
   <UInput
-    :model-value="renderValue"
     ref="inputRender"
+    :model-value="renderValue"
     v-bind="{ ...$attrs }"
     readonly
     @click="openCalendar"
@@ -139,8 +139,8 @@ const onClearable = (): void => {
   </UInput>
 
   <Datepicker
-    :model-value="modelValue"
     ref="datepicker"
+    :model-value="modelValue"
     :range="range"
     :multi-calendars="range"
     :readonly="readonly"
@@ -171,9 +171,3 @@ const onClearable = (): void => {
     <template #dp-input />
   </Datepicker>
 </template>
-
-<style>
-:root {
-  --dp-font-family: "Noto Sans Thai", sans-serif !important;
-}
-</style>

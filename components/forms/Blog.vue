@@ -7,8 +7,8 @@
         <UInput v-model="state.title" autofocus />
       </UFormGroup>
 
-      <UFormGroup label="Conntent" name="content">
-        <UTextarea v-model="state.content" />
+      <UFormGroup label="Content" name="content" class="prose max-w-none">
+        <CustomCkEditor v-model="state.content" />
       </UFormGroup>
 
       <UFormGroup label="Tags" name="tags">
@@ -43,7 +43,7 @@
         <FileInput
           v-model="state.blog_img"
           image-only
-          :oldFiles="state.Img"
+          :old-files="state.Img"
           @remove-old-file="removeOldImage()"
         />
       </UFormGroup>
@@ -60,6 +60,8 @@
 </template>
 
 <script setup lang="ts">
+import { AlertDialog } from "#components";
+import { object, string, mixed } from "yup";
 interface Img {
   url: string;
 }
@@ -71,8 +73,6 @@ export interface Blog {
   blog_img?: File;
   Img?: Img;
 }
-import { AlertDialog } from "#components";
-import { object, string, mixed } from "yup";
 
 const { t } = useI18n();
 
@@ -83,7 +83,9 @@ const schema = object({
   title: string()
     .trim()
     .required(t("IS_REQUIRED", { text: " Title " })),
-  content: string().trim(),
+  content: string()
+    .trim()
+    .required(t("IS_REQUIRED", { text: " Content " })),
   tags: string().trim(),
   blog_img: mixed()
     .test(
@@ -139,6 +141,8 @@ const onSave = async () => {
 const bind = (data?: Blog) => {
   if (data) {
     mode.value = "edit";
+    console.log(data);
+
     state.value = { ...state.value, ...data };
     if (state.value.Img) {
       state.value.Img.url = `${useRuntimeConfig().public.apiBase}${
