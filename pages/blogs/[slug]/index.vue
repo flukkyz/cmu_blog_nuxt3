@@ -95,7 +95,6 @@ const onDelete = async (id: number) => {
             icon="i-fa6-solid-trash-can"
             color="error"
             size="2xs"
-            :ui="{ rounded: 'rounded-full' }"
             @click="deleteItem()"
           />
         </UTooltip>
